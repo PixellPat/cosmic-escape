@@ -14,7 +14,7 @@ public class PuzzlePiece : MonoBehaviour
 
     private Action horizontalMoveEnd = delegate { };
     private Action verticalMoveEnd = delegate { };
-    private Action RotationalMoveEnd = delegate { };
+    private Action rotationalMoveEnd = delegate { };
 
     [BoxGroup("Game Events")]
     public GameEventSO OnPieceFrozen;
@@ -25,16 +25,13 @@ public class PuzzlePiece : MonoBehaviour
     internal bool isFrozen;
     private SpriteRenderer _renderer;
 
-    [SerializeField]
     float initialVelocity = 0;
 
-    // Let's keep it to 5 Max. 
-    int[] navigationId = new int[5];
     private void Awake()
     {
         horizontalMoveEnd += HorizontalRestart;
         verticalMoveEnd += VerticalRestart;
-        RotationalMoveEnd += RotationRestart;
+        rotationalMoveEnd += RotationRestart;
 
         _renderer = GetComponent<SpriteRenderer>();
     }
@@ -112,7 +109,7 @@ public class PuzzlePiece : MonoBehaviour
             MoveHorizontal();
         });
     }
-    private void VerticalRestart()
+    void VerticalRestart()
     {
         isMoving = false;
         Timer.Register(.5f, () =>
@@ -146,5 +143,13 @@ public class PuzzlePiece : MonoBehaviour
         // using bool isMoving for ease of understanding. There are other ways to sort the issue. 
         if (pieceData.canFreeze && !isFrozen && isMoving)
             ActivateFreeze();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player") && pieceData.isObstaclePiece)
+        {
+            collision.GetComponent<Player>().OnSufferDamage.Raise();
+        }
     }
 }

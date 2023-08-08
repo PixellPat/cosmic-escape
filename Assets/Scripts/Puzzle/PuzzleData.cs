@@ -11,6 +11,7 @@ public class PuzzleData : ScriptableObject
 
     [Tooltip("How fast it moves")]
     public float velocity;
+
     public bool startRight;
 
     public bool canFreeze;
@@ -35,4 +36,8 @@ public class PuzzleData : ScriptableObject
 
     [ShowIf("useEaseCurves"), Tooltip("Can be used to add some randomness to movements of piece")]
     public AnimationCurve[] moveCurves = new AnimationCurve[3];
+
+    [Tooltip("Can the piece harm our player")]
+    public bool isObstaclePiece;
+
 }
