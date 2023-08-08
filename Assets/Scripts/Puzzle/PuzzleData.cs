@@ -16,6 +16,8 @@ public class PuzzleData : ScriptableObject
     public bool canFreeze;
     [ShowIf("canFreeze"), Tooltip("How much cells it'll cost to freeze this piece")]
     public int freezeCellCost;
+    [ShowIf("canFreeze"), ShowAssetPreview(15, 15)]
+    public Sprite frozenSprite;
     [Range(2f, 4f), ShowIf("canFreeze")]
     public float freezeDuration;
     public enum MoveDirection
