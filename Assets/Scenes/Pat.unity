@@ -158,11 +158,11 @@ MonoBehaviour:
   finishRoomPrefab: {fileID: 5824047606965406974, guid: 5fa249e0d43896e4ea02df1e78c7759b, type: 3}
   mainDirectionBias: 60
   forkDirectionBias: 30
-  numberOfSteps: 50
+  numberOfSteps: 30
   startX: 20
   startY: 20
-  mapWidth: 50
-  mapHeight: 50
+  mapWidth: 40
+  mapHeight: 40
   roomWidth: 11
   roomHeight: 9
 --- !u!4 &830182277

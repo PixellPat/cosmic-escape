@@ -1,27 +1,21 @@
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
-public class MapGenerator : MonoBehaviour
+public class RandomMapGenerator
 {
-    public GameObject roomPrefab;
-    public GameObject forkRoomPrefab;
-    public GameObject startRoomPrefab;
-    public GameObject finishRoomPrefab;
+    private int mapWidth;
+    private int mapHeight;
+    private int numRooms;
+    //private int roomWidth = 11; // Width of a single room in units
+    //private int roomHeight = 9; // Height of a single room in units
 
-    public int mainDirectionBias = 60; // Bias for the main path direction
-    public int forkDirectionBias = 30; // Bias for the fork path direction
-    public int numberOfSteps = 50; // Number of steps
-    public int startX = 20; // Starting X Position
-    public int startY = 20; // Starting Y Position
-    public int mapWidth = 50; // Number of rooms horizontally
-    public int mapHeight = 50; // Number of rooms vertically
-    public float roomWidth = 11f; // Width of a single room in units
-    public float roomHeight = 9f; // Height of a single room in units
+    private int startX = 20; // Starting X Position
+    private int startY = 20; // Starting Y Position
+    private int mainDirectionBias = 60; // Bias for the main path direction
+    private int forkDirectionBias = 30; // Bias for the fork path direction
 
-    private HashSet<Vector2Int> visitedRooms;
-    private HashSet<Vector2Int> forkRoomPositions;
+    private HashSet<Vector2Int> roomLocations;
+    private HashSet<Vector2Int> forkRoomLocations;
 
     private enum Direction
     {
@@ -31,33 +25,22 @@ public class MapGenerator : MonoBehaviour
         Left
     }
 
-    private class Room
-    {
-        public int x;
-        public int y;
-        public GameObject roomPrefab;
 
-        public Room(int x, int y, GameObject roomPrefab)
-        {
-            this.x = x;
-            this.y = y;
-            this.roomPrefab = roomPrefab;
-        }
+    public RandomMapGenerator(int width, int height, int numRooms)
+    {
+        mapWidth = width; // Number of rooms horizontally
+        mapHeight = height; // Number of rooms vertically
+        this.numRooms = numRooms;        
     }
 
-    private void Start()
-    {
-        GenerateMap();
-    }
-
-    private void GenerateMap()
+    public HashSet<Vector2Int> GenerateMap()
     {
         // Initialize the HashSets
-        visitedRooms = new HashSet<Vector2Int>();
-        forkRoomPositions = new HashSet<Vector2Int>();
+        roomLocations = new HashSet<Vector2Int>();
+        forkRoomLocations = new HashSet<Vector2Int>();
 
         // Add the starting room location
-        visitedRooms.Add(new Vector2Int(startX, startY));
+        roomLocations.Add(new Vector2Int(startX, startY));
 
         int currentX = startX;
         int currentY = startY;
@@ -70,12 +53,12 @@ public class MapGenerator : MonoBehaviour
         // Let the biased direction equal the preferred direction for the first step 
         Direction biasedDirection = preferredDirection;
 
-        for (int i = 0; i < numberOfSteps - 1; i++)
+        for (int i = 0; i < numRooms - 1; i++)
         {
             // Fail safe in case of infinite loops
-            if (numberOfSteps >= 100 || numberOfSteps < 0)
+            if (numRooms >= 100 || numRooms < 0)
             {
-                Debug.LogWarning("ERROR: numberOfSteps = " + numberOfSteps + " ===============================");
+                Debug.Log("ERROR: numberOfSteps = " + numRooms + " ===============================");
                 break;
             }
 
@@ -99,7 +82,7 @@ public class MapGenerator : MonoBehaviour
             }
 
             // Check if the next room has already been visited and if there are rooms directly up, right, down and left of the current room
-            if (!visitedRooms.Contains(new Vector2Int(nextX, nextY))) // && (biasedDirection == Direction.Up || biasedDirection == Direction.Right || biasedDirection == Direction.Down || biasedDirection == Direction.Left))
+            if (!roomLocations.Contains(new Vector2Int(nextX, nextY))) // && (biasedDirection == Direction.Up || biasedDirection == Direction.Right || biasedDirection == Direction.Down || biasedDirection == Direction.Left))
             {
                 if (IsStraightPathX(currentX, currentY, nextX, nextY) && straightCountY == 0) // Right of Left    *TODO: straightCountY <= 1 
                 {
@@ -134,20 +117,23 @@ public class MapGenerator : MonoBehaviour
 
                 currentX = nextX;
                 currentY = nextY;
-                visitedRooms.Add(new Vector2Int(currentX, currentY));
+                roomLocations.Add(new Vector2Int(currentX, currentY));
 
             }
             else
             {
-                numberOfSteps++;
+                numRooms++;
             }
 
             // Add a bias towards the randomly chosen preferred direction
             biasedDirection = Random.Range(0, 100) < mainDirectionBias ? preferredDirection : (Direction)Random.Range(0, 4);
         }
 
-        DrawMap();
+        // Add generated room locations to the list
+        
+        return roomLocations;
     }
+
 
     private void CreateFork(int x, int y, Direction mainDirection)
     {
@@ -168,7 +154,7 @@ public class MapGenerator : MonoBehaviour
             // Fail safe in case of infinite loops
             if (forkLength >= 30 || forkLength < 0)
             {
-                Debug.LogWarning("ERROR: forkLength = " + forkLength + " ===============================");
+                Debug.Log("ERROR: forkLength = " + forkLength + " ===============================");
                 break;
             }
 
@@ -193,10 +179,10 @@ public class MapGenerator : MonoBehaviour
             }
 
 
-            if (!visitedRooms.Contains(new Vector2Int(nextX, nextY))) // *TODO ???: !forkRoomPositions.Contains(position)
+            if (!roomLocations.Contains(new Vector2Int(nextX, nextY))) // *TODO ???: !forkRoomPositions.Contains(position)
             {
-                visitedRooms.Add(new Vector2Int(nextX, nextY));
-                forkRoomPositions.Add(new Vector2Int(nextX, nextY));
+                roomLocations.Add(new Vector2Int(nextX, nextY));
+                forkRoomLocations.Add(new Vector2Int(nextX, nextY));
                 currentX = nextX;
                 currentY = nextY;
             }
@@ -211,39 +197,6 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    private void DrawMap()
-    {
-        StringBuilder logBuilder = new StringBuilder();
-
-        foreach (Vector2Int position in visitedRooms)
-        {
-            GameObject roomPrefabToInstantiate;
-
-            if (position == visitedRooms.First()) // Check if it's the first room
-            {
-                roomPrefabToInstantiate = startRoomPrefab;
-            }
-            else if (position == visitedRooms.Last()) // Check if it's the last room
-            {
-                roomPrefabToInstantiate = finishRoomPrefab;
-            }
-            else if (forkRoomPositions.Contains(position)) // Check if it's a fork path room
-            {
-                roomPrefabToInstantiate = forkRoomPrefab;
-            }
-            else // Otherwise just instantiate a normal room prefab
-            {
-                roomPrefabToInstantiate = roomPrefab;
-            }
-
-            Vector3 spawnPosition = new Vector3(position.x * roomWidth, position.y * roomHeight, 0f);
-            Instantiate(roomPrefabToInstantiate, spawnPosition, Quaternion.identity);
-
-            logBuilder.Append("Room Coords: (").Append(position.x).Append(", ").Append(position.y).Append(")").Append(System.Environment.NewLine);
-        }
-
-        Debug.LogWarning(logBuilder.ToString());
-    }
 
     private bool IsStraightPathX(int x1, int y1, int x2, int y2)
     {

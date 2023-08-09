@@ -15,6 +15,11 @@ public class GameManagerSO : ScriptableObject
     [Header("               Events")]
     [SerializeField] private GameEventSO OnUnloadPauseScene;
 
+    [Header("               Map Generation")]
+    [SerializeField] private int mapWidth = 40;
+    [SerializeField] private int mapHeight = 40;
+    [SerializeField] private int numRooms = 30;
+
 
     public LevelSO GetCurrentLevel()
     {
@@ -43,6 +48,27 @@ public class GameManagerSO : ScriptableObject
         }
     }
 
+    // Main Menu = 0, New game = 1, so load level 1
+    public void NewGame()
+    {
+        HashSet<Vector2Int> roomLocations = GenerateRoomLocations();
+
+
+        foreach (var roomLocation in roomLocations)
+        {
+            Debug.Log("Room Location: " + roomLocation);
+        }
+
+        CurrentLevelIndex = 1;
+        LoadLevelWithIndex(CurrentLevelIndex);
+    }
+
+    private HashSet<Vector2Int> GenerateRoomLocations()
+    {
+        RandomMapGenerator randomMapGenerator = new RandomMapGenerator(mapWidth, mapHeight, numRooms);
+        return randomMapGenerator.GenerateMap();
+    }
+
     // Start next level
     public void NextLevel()
     {
@@ -60,13 +86,6 @@ public class GameManagerSO : ScriptableObject
     // Restart current level
     public void RestartLevel()
     {
-        LoadLevelWithIndex(CurrentLevelIndex);
-    }
-
-    // Main Menu = 0, New game = 1, so load level 1
-    public void NewGame()
-    {
-        CurrentLevelIndex = 1;
         LoadLevelWithIndex(CurrentLevelIndex);
     }
 
