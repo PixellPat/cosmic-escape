@@ -32,11 +32,11 @@ public class PuzzleManager : MonoBehaviour
         public bool hasV_Piece;
         public bool hasR_Piece;
 
-        [ShowIf("hasH_Piece")]
+        [HideInInspector]
         public List<GameObject> horizontalPieces;
-        [ShowIf("hasV_Piece")]
+        [HideInInspector]
         public List<GameObject> verticalPieces;
-        [ShowIf("hasR_Piece")]
+        [HideInInspector]
         public List<GameObject> rotationalPieces;
     }
     public List<PuzzleRoom> puzzleRooms;
@@ -44,6 +44,7 @@ public class PuzzleManager : MonoBehaviour
     internal PuzzleRoom selectedRoom;
 
     // This keeps the reference to our solver for solver operations. 
+    [SerializeField]
     private PuzzleSolveTrigger solveTriggerObject;
 
     private void Awake()
@@ -55,10 +56,19 @@ public class PuzzleManager : MonoBehaviour
     public void SetUpRoom()
     {
         selectedRoom = puzzleRooms[Random.Range(0, puzzleRooms.Count)];
+        ClearPartitions(selectedRoom);
+
         ConfigureRoom();
 
         // instantiate the Room.
         Instantiate(selectedRoom.puzzleRoomPrefabContainer);
+    }
+
+    private void ClearPartitions(PuzzleRoom selectedRoom)
+    {
+        selectedRoom.roomPartitions.rotationalPieces.Clear();
+        selectedRoom.roomPartitions.horizontalPieces.Clear();
+        selectedRoom.roomPartitions.verticalPieces.Clear();
     }
 
     /// <summary>
@@ -128,9 +138,19 @@ public class PuzzleManager : MonoBehaviour
         // after all configs. 
 
         // the puzzle solver should always be the last child
-        selectedRoom.puzzleRoomPrefabContainer.transform.GetChild(
-            selectedRoom.puzzleRoomPrefabContainer.transform.childCount - 1).GetComponent<PuzzleSolveTrigger>().EstablishSolveTriggers();
+        solveTriggerObject = selectedRoom.puzzleRoomPrefabContainer.transform.GetChild(
+            selectedRoom.puzzleRoomPrefabContainer.transform.childCount - 1).GetComponent<PuzzleSolveTrigger>();
+
+        solveTriggerObject.EstablishSolveTriggers();
         #endregion
     }
-    
+
+    public void CheckTrigger()
+    {
+        solveTriggerObject.TriggerActivated();
+    }
+    public void RemoveTrigger()
+    {
+        solveTriggerObject.TriggerDeactivated();
+    }
 }

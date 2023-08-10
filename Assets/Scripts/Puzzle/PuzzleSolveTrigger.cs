@@ -10,7 +10,14 @@ public class PuzzleSolveTrigger : MonoBehaviour
 {
     public int hitTriggersTotal;
     public int triggersHit;
+
+    [Tooltip("Listen to this event for the door object in the scene to unlock")]
     public GameEventSO OnPuzzleSolved;
+
+    [Tooltip("In the event the puzzle needs to be solved again" +
+        "like for instance, the freeze object needs to remain on switch" +
+        "For e.g. the door should lock itself on this event if it was opened before")]
+    public GameEventSO OnPuzzleUnsolved;
 
     public void EstablishSolveTriggers()
     {
@@ -24,5 +31,10 @@ public class PuzzleSolveTrigger : MonoBehaviour
             // on solved, unlock the door. 
             OnPuzzleSolved.Raise();
         }
+    }
+    public void TriggerDeactivated()
+    {
+        triggersHit--;
+        OnPuzzleUnsolved.Raise();
     }
 }

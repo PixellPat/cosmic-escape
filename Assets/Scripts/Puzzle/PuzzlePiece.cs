@@ -25,6 +25,9 @@ public class PuzzlePiece : MonoBehaviour
     internal bool isFrozen;
     private SpriteRenderer _renderer;
 
+    [Tooltip("Use to Trigger Objects in Scene based on Frozen State of this object")]
+    public GameObject freezeCoating;
+
     float initialVelocity = 0;
 
     private void Awake()
@@ -125,16 +128,19 @@ public class PuzzlePiece : MonoBehaviour
     }
     public void ActivateFreeze()
     {
-        Debug.Log("Freeze Piece");
-        isFrozen = true;
+        freezeCoating.SetActive(true);
         _renderer.sprite = pieceData.frozenSprite;
         LeanTween.pause(gameObject);
+
+        isFrozen = true;
         OnPieceFrozen.Raise();
 
         Timer.Register(pieceData.freezeDuration, () =>
         {
             _renderer.sprite = pieceData.pieceSprite;
             LeanTween.resume(gameObject);
+            freezeCoating.SetActive(false);
+
             isFrozen = false;
             OnDefreeze.Raise();
         });

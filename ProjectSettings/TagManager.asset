@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Piece
+  - Switch
   layers:
   - Default
   - TransparentFX
@@ -44,4 +45,7 @@ TagManager:
     locked: 0
   - name: PlayGround
     uniqueID: 575225707
+    locked: 0
+  - name: Player
+    uniqueID: 3170684197
     locked: 0
