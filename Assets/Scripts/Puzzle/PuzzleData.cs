@@ -40,4 +40,5 @@ public class PuzzleData : ScriptableObject
     [Tooltip("Can the piece harm our player")]
     public bool isObstaclePiece;
 
+    public GameObject puzzlePiecePrefab;
 }

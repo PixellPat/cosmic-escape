@@ -44,7 +44,6 @@ public class PuzzlePiece : MonoBehaviour
         BeginMove();
     }
 
-    [Button]
     public void BeginMove()
     {
         switch (pieceData.navigateDirection)
@@ -65,7 +64,7 @@ public class PuzzlePiece : MonoBehaviour
     void MoveVertical()
     {
         isMoving = true;
-        transform.LeanMoveX(pieceData.maxY.y, initialVelocity).setEase(pieceData.moveCurves[Random.Range(0, pieceData.moveCurves.Length)])
+        transform.LeanMoveY(pieceData.maxY.y, initialVelocity).setEase(pieceData.moveCurves[Random.Range(0, pieceData.moveCurves.Length)])
              .setOnComplete(
              () =>
              {
@@ -73,7 +72,7 @@ public class PuzzlePiece : MonoBehaviour
                  Timer.Register(.5f, () =>
                  {
                      isMoving = true;
-                     transform.LeanMoveX(pieceData.maxY.x, initialVelocity).setEase(pieceData.moveCurves[Random.Range(0, pieceData.moveCurves.Length)])
+                     transform.LeanMoveY(pieceData.maxY.x, initialVelocity).setEase(pieceData.moveCurves[Random.Range(0, pieceData.moveCurves.Length)])
                      .setOnComplete(() => verticalMoveEnd.Invoke());
                  });
              }
@@ -99,7 +98,8 @@ public class PuzzlePiece : MonoBehaviour
     void MoveEuler()
     {
         // rotate the object 360. 
-        //transform.LeanRotateAround(Vector3.forward, 306, initialVelocity).setOnComplete(RotationalMoveEnd.Invoke);
+        isMoving = true;
+        transform.LeanRotateAround(Vector3.forward, 306, initialVelocity).setOnComplete(rotationalMoveEnd.Invoke);
     }
     void HorizontalRestart()
     {
@@ -120,7 +120,8 @@ public class PuzzlePiece : MonoBehaviour
 
     void RotationRestart()
     {
-        //MoveEuler();
+        isMoving = false;
+        MoveEuler();
     }
     public void ActivateFreeze()
     {
@@ -140,9 +141,11 @@ public class PuzzlePiece : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        // using bool isMoving for ease of understanding. There are other ways to sort the issue. 
+        //using bool isMoving for ease of understanding.There are other ways to sort the issue.
         if (pieceData.canFreeze && !isFrozen && isMoving)
+        {
             ActivateFreeze();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -152,4 +155,5 @@ public class PuzzlePiece : MonoBehaviour
             collision.GetComponent<Player>().OnSufferDamage.Raise();
         }
     }
+
 }
