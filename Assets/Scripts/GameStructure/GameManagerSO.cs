@@ -20,6 +20,9 @@ public class GameManagerSO : ScriptableObject
     [SerializeField] private int mapHeight = 40;
     [SerializeField] private int numRooms = 30;
 
+    [SerializeField] private RoomGeneratorSO roomGenerator;
+    public Transform roomCentersParent;
+
 
     public LevelSO GetCurrentLevel()
     {
@@ -51,19 +54,25 @@ public class GameManagerSO : ScriptableObject
     // Main Menu = 0, New game = 1, so load level 1
     public void NewGame()
     {
-        HashSet<Vector2Int> roomLocations = GenerateRoomLocations();
+        // Initialize the RoomGeneratorSO with the parent for room centers
+        roomGenerator.Initialize(roomCentersParent);
+
+        List<Vector2Int> roomLocations = GenerateRoomLocations();
+
+        roomGenerator.GenerateRooms(roomLocations);
 
 
-        foreach (var roomLocation in roomLocations)
-        {
-            Debug.Log("Room Location: " + roomLocation);
-        }
+        //foreach (var roomLocation in roomLocations)
+        //{
+        //    Debug.Log("Room Location: " + roomLocation);
+        //}
+
 
         CurrentLevelIndex = 1;
         LoadLevelWithIndex(CurrentLevelIndex);
     }
 
-    private HashSet<Vector2Int> GenerateRoomLocations()
+    private List<Vector2Int> GenerateRoomLocations()
     {
         RandomMapGenerator randomMapGenerator = new RandomMapGenerator(mapWidth, mapHeight, numRooms);
         return randomMapGenerator.GenerateMap();

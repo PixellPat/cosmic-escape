@@ -14,8 +14,8 @@ public class RandomMapGenerator
     private int mainDirectionBias = 60; // Bias for the main path direction
     private int forkDirectionBias = 30; // Bias for the fork path direction
 
-    private HashSet<Vector2Int> roomLocations;
-    private HashSet<Vector2Int> forkRoomLocations;
+    private List<Vector2Int> roomLocations;
+    private List<Vector2Int> forkRoomLocations;
 
     private enum Direction
     {
@@ -33,11 +33,11 @@ public class RandomMapGenerator
         this.numRooms = numRooms;        
     }
 
-    public HashSet<Vector2Int> GenerateMap()
+    public List<Vector2Int> GenerateMap()
     {
         // Initialize the HashSets
-        roomLocations = new HashSet<Vector2Int>();
-        forkRoomLocations = new HashSet<Vector2Int>();
+        roomLocations = new List<Vector2Int>();
+        forkRoomLocations = new List<Vector2Int>();
 
         // Add the starting room location
         roomLocations.Add(new Vector2Int(startX, startY));
