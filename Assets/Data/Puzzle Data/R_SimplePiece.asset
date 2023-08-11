@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7054f9957879034c91a35ed0f95e7e7, type: 3}
   m_Name: R_SimplePiece
   m_EditorClassIdentifier: 
-  pieceSprite: {fileID: 21300000, guid: 43bf620663b507f41bdf0ac7d60ca74f, type: 3}
-  velocity: 5
+  pieceSprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  traversalTime: 2
   startRight: 0
   canFreeze: 1
   freezeCellCost: 1

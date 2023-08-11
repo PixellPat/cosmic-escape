@@ -19,6 +19,10 @@ public class PuzzleSolveTrigger : MonoBehaviour
         "For e.g. the door should lock itself on this event if it was opened before")]
     public GameEventSO OnPuzzleUnsolved;
 
+    private void Start()
+    {
+        triggersHit = 0;
+    }
     public void EstablishSolveTriggers()
     {
         hitTriggersTotal = PuzzleManager.Instance.selectedRoom.totalTriggerToHit;

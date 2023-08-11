@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: V_SimplePiece
   m_EditorClassIdentifier: 
   pieceSprite: {fileID: 21300000, guid: 43bf620663b507f41bdf0ac7d60ca74f, type: 3}
-  velocity: 2.5
+  traversalTime: 2
   startRight: 0
   canFreeze: 1
   freezeCellCost: 1

@@ -10,7 +10,7 @@ public class PuzzleData : ScriptableObject
     public Sprite pieceSprite;
 
     [Tooltip("How fast it moves")]
-    public float velocity;
+    public float traversalTime;
 
     public bool startRight;
 

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: H_SimplePiece
   m_EditorClassIdentifier: 
   pieceSprite: {fileID: 21300000, guid: 43bf620663b507f41bdf0ac7d60ca74f, type: 3}
-  velocity: 2.5
+  traversalTime: 2
   startRight: 0
   canFreeze: 1
   freezeCellCost: 1
@@ -129,5 +129,5 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  isObstaclePiece: 0
+  isObstaclePiece: 1
   puzzlePiecePrefab: {fileID: 0}

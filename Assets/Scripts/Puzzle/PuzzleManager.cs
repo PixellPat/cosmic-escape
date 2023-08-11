@@ -11,6 +11,7 @@ public class PuzzleManager : MonoBehaviour
     public List<PuzzleData> horizontalPieceDatas;
     public List<PuzzleData> verticalPieceDatas;
     public List<PuzzleData> rotationalPieceDatas;
+    public List<PuzzleData> obstaclePieceDatas;
 
     [System.Serializable]
     public struct PuzzleRoom
@@ -28,9 +29,14 @@ public class PuzzleManager : MonoBehaviour
     [System.Serializable]
     public struct roomPiecePartitions
     {
+        [Tooltip("Horizontal Piece")]
         public bool hasH_Piece;
+        [Tooltip("Vertical Piece")]
         public bool hasV_Piece;
+        [Tooltip("Rotating Piece")]
         public bool hasR_Piece;
+        [Tooltip("Obstacle Piece")]
+        public bool hasO_Piece; 
 
         [HideInInspector]
         public List<GameObject> horizontalPieces;
@@ -38,6 +44,8 @@ public class PuzzleManager : MonoBehaviour
         public List<GameObject> verticalPieces;
         [HideInInspector]
         public List<GameObject> rotationalPieces;
+        [HideInInspector]
+        public List<GameObject> obstaclePieces; 
     }
     public List<PuzzleRoom> puzzleRooms;
 

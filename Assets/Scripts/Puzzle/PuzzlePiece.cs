@@ -16,6 +16,12 @@ public class PuzzlePiece : MonoBehaviour
     private Action verticalMoveEnd = delegate { };
     private Action rotationalMoveEnd = delegate { };
 
+    public Transform leftBound;
+    public Transform rightBound;
+
+    private Transform startPos;
+    private Transform endPos;
+
     [BoxGroup("Game Events")]
     public GameEventSO OnPieceFrozen;
     [BoxGroup("Game Events")]
@@ -41,12 +47,44 @@ public class PuzzlePiece : MonoBehaviour
 
     private void Start()
     {
-        //initialVelocity = pieceData.velocity * (pieceData.startRight ? 1 : -1);
-        initialVelocity = pieceData.velocity;
+        initialVelocity = pieceData.traversalTime;
+
+        #region SETTING STARTING POSITION WITH RESPECT TO PIECE DATA 
+        if (pieceData.navigateDirection == PuzzleData.MoveDirection.HORIZONTAL)
+        {
+            if (pieceData.startRight)
+            {
+                transform.position = new Vector2(rightBound.position.x, rightBound.position.y);
+                startPos = rightBound;
+                endPos = leftBound;
+            }
+            else
+            {
+                transform.position = new Vector2(leftBound.position.x, leftBound.position.y);
+                startPos = leftBound;
+                endPos = rightBound;
+            }
+        }
+        else if (pieceData.navigateDirection == PuzzleData.MoveDirection.VERTICAL)
+        {
+            if (pieceData.startRight)
+            {
+                transform.position = new Vector2(rightBound.position.x, rightBound.position.y);
+                startPos = rightBound;
+                endPos = leftBound;
+            }
+            else
+            {
+                transform.position = new Vector2(leftBound.position.x, leftBound.position.y);
+                startPos = leftBound;
+                endPos = rightBound;
+            }
+        }
+        #endregion
+
         _renderer.sprite = pieceData.pieceSprite;
         BeginMove();
     }
-
     public void BeginMove()
     {
         switch (pieceData.navigateDirection)
@@ -67,42 +105,58 @@ public class PuzzlePiece : MonoBehaviour
     void MoveVertical()
     {
         isMoving = true;
-        transform.LeanMoveY(pieceData.maxY.y, initialVelocity).setEase(pieceData.moveCurves[Random.Range(0, pieceData.moveCurves.Length)])
-             .setOnComplete(
-             () =>
-             {
-                 isMoving = false;
-                 Timer.Register(.5f, () =>
-                 {
-                     isMoving = true;
-                     transform.LeanMoveY(pieceData.maxY.x, initialVelocity).setEase(pieceData.moveCurves[Random.Range(0, pieceData.moveCurves.Length)])
-                     .setOnComplete(() => verticalMoveEnd.Invoke());
-                 });
-             }
-             );
+
+        transform.LeanMoveLocalY(endPos.localPosition.y, initialVelocity).
+          setEase(pieceData.moveCurves[Random.Range(0, pieceData.moveCurves.Length)])
+           .setOnComplete(
+           () =>
+           {
+               isMoving = false;
+               Timer.Register(Random.Range(0, .5f), () =>
+               {
+                   isMoving = true;
+                   transform.LeanMoveLocalY(startPos.localPosition.y, initialVelocity).
+                   setEase(pieceData.moveCurves[Random.Range(0, pieceData.moveCurves.Length)])
+                   .setOnComplete(() => verticalMoveEnd.Invoke());
+               });
+           }
+           );
     }
     void MoveHorizontal()
     {
         isMoving = true;
-        transform.LeanMoveX(pieceData.maxX.y, initialVelocity).setEase(pieceData.moveCurves[Random.Range(0, pieceData.moveCurves.Length)])
-             .setOnComplete(
-             () =>
-             {
-                 isMoving = false;
-                 Timer.Register(.5f, () =>
-                 {
-                     isMoving = true;
-                     transform.LeanMoveX(pieceData.maxX.x, initialVelocity).setEase(pieceData.moveCurves[Random.Range(0, pieceData.moveCurves.Length)])
-                     .setOnComplete(() => horizontalMoveEnd.Invoke());
-                 });
-             }
-             );
+
+        transform.LeanMoveLocalX(endPos.localPosition.x, initialVelocity).
+           setEase(pieceData.moveCurves[Random.Range(0, pieceData.moveCurves.Length)])
+            .setOnComplete(
+            () =>
+            {
+                isMoving = false;
+                Timer.Register(Random.Range(0, .5f), () =>
+                {
+                    isMoving = true;
+                    transform.LeanMoveLocalX(startPos.localPosition.x, initialVelocity).
+                    setEase(pieceData.moveCurves[Random.Range(0, pieceData.moveCurves.Length)])
+                    .setOnComplete(() => horizontalMoveEnd.Invoke());
+                });
+            }
+            );
     }
+
+    int zAngle = 90;
+
     void MoveEuler()
     {
-        // rotate the object 360. 
         isMoving = true;
-        transform.LeanRotateAround(Vector3.forward, 306, initialVelocity).setOnComplete(rotationalMoveEnd.Invoke);
+        transform.LeanRotateZ(zAngle, initialVelocity).setOnComplete(() =>
+        {
+            isMoving = false;
+            Timer.Register(Random.Range(0f, initialVelocity), () =>
+                {
+                    if (!isFrozen)
+                        RotationRestart();
+                });
+        });
     }
     void HorizontalRestart()
     {
@@ -120,16 +174,18 @@ public class PuzzlePiece : MonoBehaviour
             MoveVertical();
         });
     }
-
     void RotationRestart()
     {
-        isMoving = false;
+        zAngle += 90;
+        if (zAngle > 360)
+            zAngle = 90;
         MoveEuler();
     }
     public void ActivateFreeze()
     {
         freezeCoating.SetActive(true);
         _renderer.sprite = pieceData.frozenSprite;
+
         LeanTween.pause(gameObject);
 
         isFrozen = true;
@@ -140,15 +196,18 @@ public class PuzzlePiece : MonoBehaviour
             _renderer.sprite = pieceData.pieceSprite;
             LeanTween.resume(gameObject);
             freezeCoating.SetActive(false);
-
             isFrozen = false;
+            if (pieceData.navigateDirection == PuzzleData.MoveDirection.ROTATIONAL)
+                RotationRestart();
+
             OnDefreeze.Raise();
         });
     }
     private void OnMouseDown()
     {
         //using bool isMoving for ease of understanding.There are other ways to sort the issue.
-        if (pieceData.canFreeze && !isFrozen && isMoving)
+        if ((pieceData.canFreeze && !isFrozen && isMoving && !(pieceData.navigateDirection == PuzzleData.MoveDirection.ROTATIONAL)) ||
+            (pieceData.navigateDirection == PuzzleData.MoveDirection.ROTATIONAL && !isMoving))
         {
             ActivateFreeze();
         }
@@ -162,4 +221,10 @@ public class PuzzlePiece : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Traverse the opposite direction of movement. 
+        // get direction of movement then move again. 
+        transform.DOPunchPosition(new Vector2(0, 0.2f), .4f, 5).SetEase(Ease.OutBounce);
+    }
 }
