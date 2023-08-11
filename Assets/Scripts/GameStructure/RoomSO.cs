@@ -11,7 +11,7 @@ public class RoomSO : ScriptableObject
 
     // Store door positions and their corresponding directions
     public List<Vector2Int> doorPositions = new List<Vector2Int>();
-    private Dictionary<Vector2Int, Direction> doorDictionary = new Dictionary<Vector2Int, Direction>();
+    public Dictionary<Vector2Int, Direction> doorDictionary = new Dictionary<Vector2Int, Direction>();
 
     public bool isStartingRoom;
 
@@ -50,6 +50,11 @@ public class RoomSO : ScriptableObject
     public bool HasDoor(Vector2Int doorPosition)
     {
         return doorDictionary.ContainsKey(doorPosition);
+    }
+
+    public bool HasOneDoor()
+    {
+        return doorPositions.Count == 1;
     }
 
     // Example method to check if the room has a puzzle

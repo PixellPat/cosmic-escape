@@ -1,28 +1,44 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RandomMapGenerator
 {
+    private const int maxMainPathIterations = 100;
+    private const int maxForkPathIterations = 30;
+
     private int mapWidth;
     private int mapHeight;
     private int numRooms;
-    //private int roomWidth = 11; // Width of a single room in units
-    //private int roomHeight = 9; // Height of a single room in units
 
     private int startX = 20; // Starting X Position
     private int startY = 20; // Starting Y Position
     private int mainDirectionBias = 60; // Bias for the main path direction
     private int forkDirectionBias = 30; // Bias for the fork path direction
 
-    private List<Vector2Int> roomLocations;
+    private List<Vector2Int> mainRoomLocations;
     private List<Vector2Int> forkRoomLocations;
+    private List<RoomData> roomPathData;
 
-    private enum Direction
+
+    private enum Direction 
     {
         Up,
         Right,
         Down,
         Left
+    }
+
+    public struct RoomData
+    {
+        public Vector2Int Location;
+        public bool IsLastRoom;
+
+        public RoomData(Vector2Int location, bool isLastRoom)
+        {
+            Location = location;
+            IsLastRoom = isLastRoom;
+        }
     }
 
 
@@ -33,19 +49,22 @@ public class RandomMapGenerator
         this.numRooms = numRooms;        
     }
 
-    public List<Vector2Int> GenerateMap()
+    public List<RoomData> GenerateMap()
     {
-        // Initialize the HashSets
-        roomLocations = new List<Vector2Int>();
-        forkRoomLocations = new List<Vector2Int>();
-
-        // Add the starting room location
-        roomLocations.Add(new Vector2Int(startX, startY));
-
         int currentX = startX;
         int currentY = startY;
         int straightCountX = 0;
         int straightCountY = 0;
+        int originalNumRooms = numRooms;
+
+        // Initialize the Lists
+        mainRoomLocations = new List<Vector2Int>();
+        forkRoomLocations = new List<Vector2Int>();
+        roomPathData = new List<RoomData>();
+
+        // Add the starting room locations
+        mainRoomLocations.Add(new Vector2Int(startX, startY));
+        roomPathData.Add(new RoomData(new Vector2Int(startX, startY), false));
 
         // Randomly select a starting preferred direction (0: Up, 1: Right, 2: Down, 3: Left)
         Direction preferredDirection = (Direction)Random.Range(0, 4);
@@ -53,13 +72,29 @@ public class RandomMapGenerator
         // Let the biased direction equal the preferred direction for the first step 
         Direction biasedDirection = preferredDirection;
 
+
         for (int i = 0; i < numRooms - 1; i++)
         {
             // Fail safe in case of infinite loops
-            if (numRooms >= 100 || numRooms < 0)
+            if (numRooms >= maxMainPathIterations || numRooms < 0)
             {
-                Debug.Log("ERROR: numberOfSteps = " + numRooms + " ===============================");
-                break;
+                Debug.Log("ERROR: numRooms = " + numRooms + " ===============================");
+
+                numRooms = originalNumRooms; // Reset numRooms to its original value
+                i = -1; // Reset i to -1, so it becomes 0 in the next iteration
+                currentX = startX; // Reset currentX to its original value
+                currentY = startY; // Reset currentY to its original value
+                straightCountX = 0; // Reset straightCountX to 0
+                straightCountY = 0; // Reset straightCountY to 0
+                mainRoomLocations.Clear(); // Clear mainRoomLocations list
+                forkRoomLocations.Clear(); // Clear forkRoomLocations list
+                roomPathData.Clear(); // Clear roomPathData list
+
+                // Add the starting room locations
+                mainRoomLocations.Add(new Vector2Int(startX, startY));
+                roomPathData.Add(new RoomData(new Vector2Int(startX, startY), false));
+
+                continue; // Restart the loop from the beginning
             }
 
             int nextX = currentX;
@@ -82,7 +117,7 @@ public class RandomMapGenerator
             }
 
             // Check if the next room has already been visited and if there are rooms directly up, right, down and left of the current room
-            if (!roomLocations.Contains(new Vector2Int(nextX, nextY))) // && (biasedDirection == Direction.Up || biasedDirection == Direction.Right || biasedDirection == Direction.Down || biasedDirection == Direction.Left))
+            if (!mainRoomLocations.Contains(new Vector2Int(nextX, nextY))) 
             {
                 if (IsStraightPathX(currentX, currentY, nextX, nextY) && straightCountY == 0) // Right of Left    *TODO: straightCountY <= 1 
                 {
@@ -117,8 +152,8 @@ public class RandomMapGenerator
 
                 currentX = nextX;
                 currentY = nextY;
-                roomLocations.Add(new Vector2Int(currentX, currentY));
-
+                mainRoomLocations.Add(new Vector2Int(currentX, currentY));
+                roomPathData.Add(new RoomData(new Vector2Int(currentX, currentY), false));
             }
             else
             {
@@ -127,11 +162,19 @@ public class RandomMapGenerator
 
             // Add a bias towards the randomly chosen preferred direction
             biasedDirection = Random.Range(0, 100) < mainDirectionBias ? preferredDirection : (Direction)Random.Range(0, 4);
+
         }
 
-        // Add generated room locations to the list
-        
-        return roomLocations;
+        // Make a copy of the last mainRoomLocation added
+        RoomData lastMainPathRoomData = roomPathData.Last();
+
+        // Remove the last mainRoomLocation added because it has it's bool set to 'false' for being the last room in it's path
+        roomPathData.RemoveAt(roomPathData.Count - 1);
+
+        // Add the location of copy above and make the bool 'true' for being the last room in the main path
+        roomPathData.Add(new RoomData(lastMainPathRoomData.Location, true));
+
+        return roomPathData;
     }
 
 
@@ -152,10 +195,15 @@ public class RandomMapGenerator
         for (int i = 0; i < forkLength; i++)
         {
             // Fail safe in case of infinite loops
-            if (forkLength >= 30 || forkLength < 0)
+            if (forkLength >= maxForkPathIterations || forkLength < 0)
             {
                 Debug.Log("ERROR: forkLength = " + forkLength + " ===============================");
-                break;
+
+                forkLength = Random.Range(2, 6); // Reset forkLength 
+                i = -1; // Reset i to -1, so it becomes 0 in the next iteration
+                currentX = x; // Reset currentX to its original value
+                currentY = y; // Reset currentY to its original value
+                continue; // Restart the loop from the beginning
             }
 
             int nextX = currentX;
@@ -179,9 +227,9 @@ public class RandomMapGenerator
             }
 
 
-            if (!roomLocations.Contains(new Vector2Int(nextX, nextY))) // *TODO ???: !forkRoomPositions.Contains(position)
+            if (!mainRoomLocations.Contains(new Vector2Int(nextX, nextY))) // *TODO ???: !forkRoomPositions.Contains(position)
             {
-                roomLocations.Add(new Vector2Int(nextX, nextY));
+                mainRoomLocations.Add(new Vector2Int(nextX, nextY));
                 forkRoomLocations.Add(new Vector2Int(nextX, nextY));
                 currentX = nextX;
                 currentY = nextY;
@@ -194,6 +242,12 @@ public class RandomMapGenerator
 
             // Add a bias towards the randomly chosen perpendicular direction
             biasedDirection = Random.Range(0, 100) < forkDirectionBias ? perpendicularDirection : (Direction)Random.Range(0, 4);
+        }
+
+        foreach (Vector2Int forkLocation in forkRoomLocations)
+        {
+            bool isLastRoom = forkLocation == forkRoomLocations.Last();
+            roomPathData.Add(new RoomData(forkLocation, isLastRoom));
         }
     }
 
