@@ -36,7 +36,7 @@ public class PuzzleManager : MonoBehaviour
         [Tooltip("Rotating Piece")]
         public bool hasR_Piece;
         [Tooltip("Obstacle Piece")]
-        public bool hasO_Piece; 
+        public bool hasO_Piece;
 
         [HideInInspector]
         public List<GameObject> horizontalPieces;
@@ -45,7 +45,7 @@ public class PuzzleManager : MonoBehaviour
         [HideInInspector]
         public List<GameObject> rotationalPieces;
         [HideInInspector]
-        public List<GameObject> obstaclePieces; 
+        public List<GameObject> obstaclePieces;
     }
     public List<PuzzleRoom> puzzleRooms;
 
@@ -96,7 +96,7 @@ public class PuzzleManager : MonoBehaviour
             for (int i = 0; i < verticalCount; i++)
             {
                 selectedRoom.roomPartitions.verticalPieces.
-                    Add(selectedRoom.puzzleRoomPrefabContainer.transform.GetChild(0).GetChild(i).gameObject);
+                    Add(selectedRoom.puzzleRoomPrefabContainer.transform.GetChild(0).GetChild(i).GetChild(0).gameObject);
             }
             for (int i = 0; i < selectedRoom.roomPartitions.verticalPieces.Count; i++)
             {
@@ -112,7 +112,7 @@ public class PuzzleManager : MonoBehaviour
             for (int i = 0; i < horizontalCount; i++)
             {
                 selectedRoom.roomPartitions.horizontalPieces.
-                    Add(selectedRoom.puzzleRoomPrefabContainer.transform.GetChild(1).GetChild(i).gameObject);
+                    Add(selectedRoom.puzzleRoomPrefabContainer.transform.GetChild(1).GetChild(i).GetChild(0).gameObject);
             }
 
             for (int i = 0; i < selectedRoom.roomPartitions.horizontalPieces.Count; i++)
@@ -129,7 +129,7 @@ public class PuzzleManager : MonoBehaviour
             for (int i = 0; i < rotationalCount; i++)
             {
                 selectedRoom.roomPartitions.rotationalPieces.
-                    Add(selectedRoom.puzzleRoomPrefabContainer.transform.GetChild(2).GetChild(i).gameObject);
+                    Add(selectedRoom.puzzleRoomPrefabContainer.transform.GetChild(2).GetChild(i).GetChild(0).gameObject);
             }
 
             for (int i = 0; i < selectedRoom.roomPartitions.rotationalPieces.Count; i++)
@@ -149,6 +149,7 @@ public class PuzzleManager : MonoBehaviour
         solveTriggerObject = selectedRoom.puzzleRoomPrefabContainer.transform.GetChild(
             selectedRoom.puzzleRoomPrefabContainer.transform.childCount - 1).GetComponent<PuzzleSolveTrigger>();
 
+        selectedRoom.totalTriggerToHit = solveTriggerObject.transform.childCount;
         solveTriggerObject.EstablishSolveTriggers();
         #endregion
     }

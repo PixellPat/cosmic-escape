@@ -989,6 +989,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpikedWall
       objectReference: {fileID: 0}
+    - target: {fileID: 4562612058696849280, guid: 0f38204b0719ff849beafaa331dc4e52, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4562612058696849281, guid: 0f38204b0719ff849beafaa331dc4e52, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 1
@@ -1090,6 +1094,10 @@ PrefabInstance:
     - target: {fileID: 4562612058696849280, guid: 0f38204b0719ff849beafaa331dc4e52, type: 3}
       propertyPath: m_Name
       value: SpikedWall
+      objectReference: {fileID: 0}
+    - target: {fileID: 4562612058696849280, guid: 0f38204b0719ff849beafaa331dc4e52, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4562612058696849281, guid: 0f38204b0719ff849beafaa331dc4e52, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
