@@ -5,6 +5,7 @@ namespace MyEnums
         North,
         East,
         South,
-        West
+        West,
+        None
     }
 }

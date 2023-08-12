@@ -625,6 +625,77 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+--- !u!1 &1491747552
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1491747555}
+  - component: {fileID: 1491747554}
+  - component: {fileID: 1491747553}
+  m_Layer: 0
+  m_Name: MapGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1491747553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491747552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27b94a9261e4ef64a996a4e1999000df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomPrefabs: []
+  startRoom: {fileID: 11400000, guid: 6a70df4398438fa44b67c98f7dc87358, type: 2}
+  basicRoom: {fileID: 11400000, guid: e88d01f7e971dfc449b3ade90d113c3f, type: 2}
+  forkPathRoom: {fileID: 11400000, guid: dd9ee11e1e7915a4a80b91f5e805bb34, type: 2}
+  endRoom: {fileID: 11400000, guid: 9cd8d6d6fa38db042a1097cfd1875944, type: 2}
+--- !u!114 &1491747554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491747552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f741392c5a92f44cb832919c0bceec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapWidth: 40
+  mapHeight: 40
+  numRooms: 30
+  startX: 20
+  startY: 20
+  mainDirectionBias: 60
+  forkDirectionBias: 30
+  roomLocations: []
+  roomGenerator: {fileID: 1491747553}
+--- !u!4 &1491747555
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491747552}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -27.140463, y: -53.173923, z: -0.7440627}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1814029445
 GameObject:
   m_ObjectHideFlags: 0

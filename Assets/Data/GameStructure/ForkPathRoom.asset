@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 494753855f7d81c4ab30c37e5f547720, type: 3}
-  m_Name: BasicRoom
+  m_Name: ForkPathRoom
   m_EditorClassIdentifier: 
+  roomWidth: 11
+  roomHeight: 9
   gridPosition: {x: 0, y: 0}
-  roomPrefab: {fileID: 2010953089986556582, guid: 45edbbc6962e5f64cb381223701ece42, type: 3}
+  roomPrefab: {fileID: 3825223399773468497, guid: dd859c10da6d8344bbaa1e4b19a4e520, type: 3}
   roomCenter: {fileID: 0}
-  doorPositions:
-  - {x: 0, y: 0}
+  doorPositions: []
   isStartingRoom: 0
-  hasPuzzle: 1
+  hasPuzzle: 0
   puzzleType: 0
-  puzzleDifficulty: 1
-  puzzleImage: {fileID: 21300000, guid: 62ce01ddca719d34ea9648c586a7cc94, type: 3}
-  puzzleDescription: blah blah blah
+  puzzleDifficulty: 0
+  puzzleImage: {fileID: 0}
+  puzzleDescription: 

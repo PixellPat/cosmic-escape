@@ -16,15 +16,6 @@ public class GameManagerSO : ScriptableObject
     [Header("               Events")]
     [SerializeField] private GameEventSO OnUnloadPauseScene;
 
-    [Header("               Map Generation")]
-    [SerializeField] private int mapWidth = 40;
-    [SerializeField] private int mapHeight = 40;
-    [SerializeField] private int numRooms = 30;
-
-    public RoomGeneratorSO roomGenerator;
-    public Transform roomCentersParent;
-
-
     public LevelSO GetCurrentLevel()
     {
         //Debug.Log(CurrentLevelIndex);
@@ -55,30 +46,8 @@ public class GameManagerSO : ScriptableObject
     // Main Menu = 0, New game = 1, so load level 1
     public void NewGame()
     {
-        // Initialize the RoomGeneratorSO with the parent for room centers
-        roomGenerator.Initialize(roomCentersParent);
-
-        List<RandomMapGenerator.RoomData> roomDataList = GenerateRoomData();
-
-        foreach (var roomData in roomDataList)
-        {
-            Debug.Log("Room Location: " + roomData.Location + ", IsLastRoom?: " + roomData.IsLastRoom);
-        }
-        
-        List<Vector2Int> roomLocations = roomDataList.Select(roomData => roomData.Location).ToList();
-
-
-        roomGenerator.GenerateRooms(roomLocations);
-
-
         CurrentLevelIndex = 1;
         LoadLevelWithIndex(CurrentLevelIndex);
-    }
-
-    private List<RandomMapGenerator.RoomData> GenerateRoomData()
-    {
-        RandomMapGenerator randomMapGenerator = new RandomMapGenerator(mapWidth, mapHeight, numRooms);
-        return randomMapGenerator.GenerateMap();
     }
 
     // Start next level

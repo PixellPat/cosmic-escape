@@ -5,6 +5,9 @@ using MyEnums;
 [CreateAssetMenu(fileName = "NewRoom", menuName = "Scriptable Objects/Game Data/Room")]
 public class RoomSO : ScriptableObject
 {
+    public int roomWidth = 11;
+    public int roomHeight = 9;
+
     public Vector2Int gridPosition;     // (X, Y) position
     public GameObject roomPrefab;       // Prefab for the room's visual representation
     public Transform roomCenter;        // Center position of the room
@@ -25,6 +28,8 @@ public class RoomSO : ScriptableObject
     public Sprite puzzleImage;          // Image representing the puzzle
     public string puzzleDescription;    // Description of the puzzle
 
+    public Direction DoorOutDirection { get; private set; }
+
 
     public void Initialize(Vector2Int position, bool isStarting = false)
     {
@@ -41,6 +46,33 @@ public class RoomSO : ScriptableObject
         return Direction.North; // Return a default direction if not found
     }
 
+    public void SetDoorDirection(Vector2Int doorPosition, Direction direction)
+    {
+        if (doorDictionary.ContainsKey(doorPosition))
+        {
+            doorDictionary[doorPosition] = direction;
+        }
+        else
+        {
+            Debug.LogWarning("Door position not found in doorDictionary.");
+        }
+    }
+
+    // Set the exit door direction based on the previous room direction
+    public void SetExitDoorDirection(Direction previousRoomDirection)
+    {
+        if (doorPositions.Count > 0)
+        {
+            Vector2Int exitDoorPosition = doorPositions[doorPositions.Count - 1]; // Use the same door position
+            doorDictionary[exitDoorPosition] = previousRoomDirection; // Set the exit door direction based on the previous room's direction
+        }
+        else
+        {
+            Debug.LogWarning("No exit door position available.");
+        }
+    }
+
+
     public void AddDoor(Vector2Int doorPosition, Direction direction)
     {
         doorPositions.Add(doorPosition);
@@ -54,7 +86,14 @@ public class RoomSO : ScriptableObject
 
     public bool HasOneDoor()
     {
-        return doorPositions.Count == 1;
+        if (doorPositions != null)
+        {
+            return doorPositions.Count == 1;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     // Example method to check if the room has a puzzle
@@ -97,8 +136,9 @@ public class RoomSO : ScriptableObject
 public enum PuzzleType
 {
     None,
-    Maze,
+    Spike,
+    Colour,
     Memory,
-    Riddle,
+    Riddle
     // Add more puzzle types as needed
 }
