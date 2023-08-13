@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MyEnums;
+using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(fileName = "NewRoom", menuName = "Scriptable Objects/Game Data/Room")]
 public class RoomSO : ScriptableObject
@@ -17,6 +18,11 @@ public class RoomSO : ScriptableObject
     public Dictionary<Vector2Int, Direction> doorDictionary = new Dictionary<Vector2Int, Direction>();
 
     public bool isStartingRoom;
+
+    [Header("Tilemap Locations")]
+    public List<Vector2Int> floorTileLocations = new List<Vector2Int>();
+    public List<Vector2Int> wallTileLocations = new List<Vector2Int>();
+    public List<Vector2Int> doorTileLocations = new List<Vector2Int>();
 
     [Header("Puzzle Settings")]
     public bool hasPuzzle;              // Does this room have a puzzle?
@@ -35,6 +41,89 @@ public class RoomSO : ScriptableObject
     {
         gridPosition = position;
         isStartingRoom = isStarting;
+    }
+
+    public void CalculateTileLocations()
+    {
+        floorTileLocations = new List<Vector2Int>();
+        wallTileLocations = new List<Vector2Int>();
+        doorTileLocations = new List<Vector2Int>();
+
+        // Calculate wall tile positions while avoiding doors
+        for (int x = 0; x < roomWidth; x++)
+        {
+            for (int y = 0; y < roomHeight; y++)
+            {
+                Vector2Int tilePos = new Vector2Int(x, y);
+
+                if (!doorTileLocations.Contains(tilePos))
+                {
+                    wallTileLocations.Add(tilePos);
+
+                    // Calculate the door positions based on the wall's position
+                    // and add them to doorTileLocations
+                    if (y == 0 && x != 0 && x != roomWidth - 1) // Top wall
+                    {
+                        doorTileLocations.Add(new Vector2Int(tilePos.x, tilePos.y + 1));
+                    }
+                    else if (y == roomHeight - 1 && x != 0 && x != roomWidth - 1) // Bottom wall
+                    {
+                        doorTileLocations.Add(new Vector2Int(tilePos.x, tilePos.y - 1));
+                    }
+                    else if (x == 0 && y != 0 && y != roomHeight - 1) // Left wall
+                    {
+                        doorTileLocations.Add(new Vector2Int(tilePos.x + 1, tilePos.y));
+                    }
+                    else if (x == roomWidth - 1 && y != 0 && y != roomHeight - 1) // Right wall
+                    {
+                        doorTileLocations.Add(new Vector2Int(tilePos.x - 1, tilePos.y));
+                    }
+                }
+            }
+        }
+
+        // Calculate floor tile positions
+        for (int x = 1; x < roomWidth - 1; x++)
+        {
+            for (int y = 1; y < roomHeight - 1; y++)
+            {
+                floorTileLocations.Add(new Vector2Int(x, y));
+            }
+        }
+    }
+
+    public Vector2Int GetDirectionVector(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.North:
+                return new Vector2Int(0, 1);
+            case Direction.East:
+                return new Vector2Int(1, 0);
+            case Direction.South:
+                return new Vector2Int(0, -1);
+            case Direction.West:
+                return new Vector2Int(-1, 0);
+            default:
+                return Vector2Int.zero; // Handle default case appropriately
+        }
+    }
+
+    public Direction GetOppositeDirection(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.North:
+                return Direction.South;
+            case Direction.East:
+                return Direction.West;
+            case Direction.South:
+                return Direction.North;
+            case Direction.West:
+                return Direction.East;
+            default:
+                return Direction.None; // Handle default case appropriately
+        }
     }
 
     public Direction GetDoorDirection(Vector2Int doorPosition)

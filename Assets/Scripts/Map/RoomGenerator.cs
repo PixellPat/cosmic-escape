@@ -6,19 +6,11 @@ using MyEnums;
 
 public class RoomGenerator : MonoBehaviour
 {
-    //public GameObject floorTilePrefab;
-    //public GameObject wallTilePrefab;
-    //public GameObject doorTilePrefab;
-
-    public RoomSO[] roomPrefabs;
     private Transform roomsParent;
-
     private List<RoomSO> generatedRooms = new List<RoomSO>();
-
-    [SerializeField] RoomSO startRoom;
-    [SerializeField] RoomSO basicRoom;
-    [SerializeField] RoomSO forkPathRoom;
-    [SerializeField] RoomSO endRoom;
+    
+    [SerializeField] private RoomSO[] roomPrefabs;
+    [SerializeField] private TilemapController tilemapController;
 
     private void Start()
     {
@@ -40,6 +32,13 @@ public class RoomGenerator : MonoBehaviour
         // Generate room instances and establish connections between them
         RoomSO[,] generatedRoomGrid = GenerateAndStoreRooms(roomDataList);
         ConnectRooms(generatedRoomGrid, maxX, maxY);
+
+        // After generating and storing rooms
+        foreach (RoomSO room in generatedRooms)
+        {
+            room.CalculateTileLocations(); // Calculate tile locations for each room
+            tilemapController.PlaceTiles(room);
+        }
 
         // Call the debugging function to log the generated room data
         DebugLogGeneratedRooms();
@@ -208,9 +207,14 @@ public class RoomGenerator : MonoBehaviour
 
         roomInstance.roomCenter = roomCenterObject.transform;
 
-        // Instantiate the "basicRoom" prefab and assign it to the roomPrefab property
-        GameObject roomPrefabInstance = Instantiate(basicRoom.roomPrefab, roomCenterObject.transform);
-        roomInstance.roomPrefab = roomPrefabInstance;
+        // Use ChooseRandomRoomPrefab() to get a random room prefab
+        RoomSO randomRoomPrefab = ChooseRandomRoomPrefab();
+        if (randomRoomPrefab != null)
+        {
+            // Instantiate the randomly chosen room prefab and assign it to the roomPrefab property
+            GameObject roomPrefabInstance = Instantiate(randomRoomPrefab.roomPrefab, roomCenterObject.transform);
+            roomInstance.roomPrefab = roomPrefabInstance;
+        }
 
         return roomInstance;
     }

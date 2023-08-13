@@ -250,7 +250,7 @@ public class RandomMapGenerator : MonoBehaviour
         roomPathData.RemoveAt(roomPathData.Count - 1);
 
         // Add the location of copy above and make the bool 'true' for being the last room in the main path
-        roomPathData.Add(new RoomData(lastForkPathRoomData.Location, true));
+        roomPathData.Add(new RoomData(roomLocations.Last(), true));
     }
 
 
