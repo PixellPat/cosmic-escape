@@ -20,5 +20,10 @@ public class WeaponPiece : MonoBehaviour
         {
             GameObject.FindWithTag("Player").GetComponent<Player>().OnSufferDamage.Raise();
         }
+        if (collision.CompareTag("Enemy"))
+        {
+            Destroy(collision.gameObject);
+            PuzzleManager.Instance.CheckTrigger();
+        }
     }
 }

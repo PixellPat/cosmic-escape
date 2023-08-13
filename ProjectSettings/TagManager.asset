@@ -9,6 +9,7 @@ TagManager:
   - FreezeCoating
   - TriggerBox
   - Trap
+  - Enemy
   layers:
   - Default
   - TransparentFX
