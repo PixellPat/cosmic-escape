@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MyEnums;
-using UnityEngine.Tilemaps;
-using System.Linq;
 
 [CreateAssetMenu(fileName = "NewRoom", menuName = "Scriptable Objects/Game Data/Room")]
 public class RoomSO : ScriptableObject
@@ -132,18 +130,6 @@ public class RoomSO : ScriptableObject
         return Direction.None; // Return a default direction if not found
     }
 
-    //public void SetDoorDirection(Vector2Int doorPosition, Direction direction)
-    //{
-    //    if (doorDictionary.ContainsKey(doorPosition))
-    //    {
-    //        doorDictionary[doorPosition] = direction;
-    //    }
-    //    else
-    //    {
-    //        Debug.LogWarning("Door position not found in doorDictionary.");
-    //    }
-    //}
-
     private bool IsCornerTilePosition(int x, int y)
     {
         bool isTopEdge = y == roomHeight - 1;
@@ -154,24 +140,10 @@ public class RoomSO : ScriptableObject
         return (isTopEdge && (isLeftEdge || isRightEdge)) || (isBottomEdge && (isLeftEdge || isRightEdge));
     }
 
-
     public void AddDoor(Vector2Int doorPosition, Direction direction)
     {
         doorPositions.Add(doorPosition);
         doorDictionary[doorPosition] = direction;
-    }
-
-
-    public bool HasOneDoor()
-    {
-        if (doorPositions != null)
-        {
-            return doorPositions.Count == 1;
-        }
-        else
-        {
-            return false;
-        }
     }
 
     // Example method to check if the room has a puzzle

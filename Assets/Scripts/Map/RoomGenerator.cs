@@ -95,7 +95,7 @@ public class RoomGenerator : MonoBehaviour
                     {
                         Vector2Int doorPosition = CalculateDoorPosition(room.gridPosition, direction);
                         RoomSO connectedRoom = FindRoomAtLocation(doorPosition);
-                        if (connectedRoom != null && !connectedRoom.isEndOfPathRoom)
+                        if (connectedRoom != null)
                         {
                             ConnectRooms(room, connectedRoom, doorPosition, direction);
                         }

@@ -23,9 +23,6 @@ public class TilemapController : MonoBehaviour
 
     // Floor Tiles
     public TileBase[] floorTiles;
-    //public TileBase floorTile2;
-    //public TileBase floorTile3;
-    //public TileBase floorTile4;
 
     // Door Tiles
     public TileBase eastDoorTile;
@@ -202,18 +199,5 @@ public class TilemapController : MonoBehaviour
             default:
                 return null; // Handle default case appropriately
         }
-    }
-
-    private TileBase FlipTile180Degrees(TileBase tile)
-    {
-        if (tile is Tile)
-        {
-            Tile tileData = (Tile)tile;
-            Matrix4x4 matrix = tileData.transform;
-            matrix = matrix * Matrix4x4.Rotate(Quaternion.Euler(0, 0, 180));
-            tileData.transform = matrix;
-            return tileData;
-        }
-        return tile; // Return the original tile if it's not a Tile type
     }
 }

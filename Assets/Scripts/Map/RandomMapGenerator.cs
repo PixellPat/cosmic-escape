@@ -24,7 +24,6 @@ public class RandomMapGenerator : MonoBehaviour
     [SerializeField] RoomGenerator roomGenerator;
 
 
-
     public struct RoomData
     {
         public Vector2Int Location;
