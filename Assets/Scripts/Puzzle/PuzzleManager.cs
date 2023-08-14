@@ -26,6 +26,10 @@ public class PuzzleManager : MonoBehaviour
         public int reward;
     }
 
+
+    [Tooltip("Listen to this event for the door object in the scene to unlock")]
+    public GameEventSO OnPuzzleSolved;
+
     [System.Serializable]
     public struct roomPiecePartitions
     {
@@ -51,6 +55,10 @@ public class PuzzleManager : MonoBehaviour
 
     internal PuzzleRoom selectedRoom;
 
+    [SerializeField] int puzzleRoomValue;
+    [SerializeField] int toHit;
+    [SerializeField] int currentHit;
+
     // This keeps the reference to our solver for solver operations. 
     [SerializeField]
     private PuzzleSolveTrigger solveTriggerObject;
@@ -63,7 +71,9 @@ public class PuzzleManager : MonoBehaviour
     [Button]
     public void SetUpRoom()
     {
-        selectedRoom = puzzleRooms[Random.Range(0, puzzleRooms.Count)];
+        selectedRoom = puzzleRooms[puzzleRoomValue];
+        currentHit = 0;
+
         ClearPartitions(selectedRoom);
 
         ConfigureRoom();
@@ -149,17 +159,24 @@ public class PuzzleManager : MonoBehaviour
         solveTriggerObject = selectedRoom.puzzleRoomPrefabContainer.transform.GetChild(
             selectedRoom.puzzleRoomPrefabContainer.transform.childCount - 1).GetComponent<PuzzleSolveTrigger>();
 
-        selectedRoom.totalTriggerToHit = solveTriggerObject.transform.childCount;
-        solveTriggerObject.EstablishSolveTriggers();
+        //selectedRoom.totalTriggerToHit = solveTriggerObject.transform.childCount;
+        toHit = solveTriggerObject.transform.childCount;
+        //solveTriggerObject.EstablishSolveTriggers();
         #endregion
     }
 
     public void CheckTrigger()
     {
-        solveTriggerObject.TriggerActivated();
+        //solveTriggerObject.TriggerActivated();
+        currentHit++;
+        if (currentHit >= toHit)
+        {
+            OnPuzzleSolved.Raise();
+        }
     }
     public void RemoveTrigger()
     {
-        solveTriggerObject.TriggerDeactivated();
+        //solveTriggerObject.TriggerDeactivated();
+        currentHit--;
     }
 }

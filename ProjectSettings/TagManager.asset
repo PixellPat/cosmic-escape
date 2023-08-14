@@ -10,6 +10,7 @@ TagManager:
   - TriggerBox
   - Trap
   - Enemy
+  - Hazard
   layers:
   - Default
   - TransparentFX

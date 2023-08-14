@@ -104,6 +104,7 @@ public class PuzzlePiece : MonoBehaviour
     }
     void MoveVertical()
     {
+        Debug.Log("Should Move Vertical");
         isMoving = true;
 
         transform.LeanMoveLocalY(endPos.localPosition.y, initialVelocity).
@@ -185,8 +186,9 @@ public class PuzzlePiece : MonoBehaviour
     {
         freezeCoating.SetActive(true);
         _renderer.sprite = pieceData.frozenSprite;
-        _renderer.color = new Color(56, 225, 253, 1);
-
+        Color newColor = new Color(.2f, .85f, .98f, 1);
+        newColor.a = 1;
+        _renderer.color = newColor;
 
         LeanTween.pause(gameObject);
 

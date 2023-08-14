@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7054f9957879034c91a35ed0f95e7e7, type: 3}
-  m_Name: R_SimplePiece
+  m_Name: V_SimpleTrap
   m_EditorClassIdentifier: 
-  pieceSprite: {fileID: -626423192, guid: 249edce45a30e3440848118f363f2d79, type: 3}
+  pieceSprite: {fileID: -98657103, guid: 249edce45a30e3440848118f363f2d79, type: 3}
   traversalTime: 2
   startRight: 0
   canFreeze: 1
   freezeCellCost: 1
-  frozenSprite: {fileID: -626423192, guid: 249edce45a30e3440848118f363f2d79, type: 3}
+  frozenSprite: {fileID: -98657103, guid: 249edce45a30e3440848118f363f2d79, type: 3}
   freezeDuration: 3
-  navigateDirection: 2
+  navigateDirection: 0
   maxX: {x: -2, y: 2}
   maxY: {x: -3, y: 3}
   useEaseCurves: 1
@@ -50,14 +50,23 @@ MonoBehaviour:
   - serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 0
+      time: 0.03687668
+      value: 0.5581665
       inSlope: 0
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
+    - serializedVersion: 3
+      time: 0.84128875
+      value: 0.1831795
+      inSlope: 1.3794628
+      outSlope: 1.3794628
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 0.9833374
       value: 1.0070763
@@ -81,6 +90,24 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0
       outWeight: 0
+    - serializedVersion: 3
+      time: 0.31143528
+      value: 0.7219759
+      inSlope: 1.4311898
+      outSlope: 1.4311898
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.79578215
+      value: 0.4741608
+      inSlope: 0.1917111
+      outSlope: 0.1917111
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 1

@@ -22,7 +22,8 @@ public class WeaponPiece : MonoBehaviour
         }
         if (collision.CompareTag("Enemy"))
         {
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
+            Destroy(gameObject);
             PuzzleManager.Instance.CheckTrigger();
         }
     }
