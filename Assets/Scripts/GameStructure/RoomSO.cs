@@ -26,6 +26,7 @@ public class RoomSO : ScriptableObject
     public List<Vector2Int> floorTileLocations = new List<Vector2Int>();
     public List<Vector2Int> wallTileLocations = new List<Vector2Int>();
     public List<Vector2Int> doorTileLocations = new List<Vector2Int>();
+    public List<Vector2Int> cornerWallTileLocations = new List<Vector2Int>();
 
     [Header("Puzzle Settings")]
     public bool hasPuzzle;              // Does this room have a puzzle?
@@ -36,7 +37,6 @@ public class RoomSO : ScriptableObject
     public int puzzleDifficulty;        // Difficulty level of the puzzle
     public Sprite puzzleImage;          // Image representing the puzzle
     public string puzzleDescription;    // Description of the puzzle
-
 
     public void Initialize(Vector2Int position, bool isStartRoom = false, bool isEndRoom = false)
     {
@@ -70,6 +70,17 @@ public class RoomSO : ScriptableObject
             }
         }
 
+        for (int x = 1; x < roomWidth - 1; x++)
+        {
+            for (int y = 1; y < roomHeight - 1; y++)
+            {
+                if (Random.value < 0.25f) // Adjust the threshold for randomness
+                {
+                    floorTileLocations.Add(new Vector2Int(x, y) + roomPosition);
+                }
+            }
+        }
+
         // Calculate wall tile positions
         for (int x = 0; x < roomWidth; x++)
         {
@@ -80,8 +91,13 @@ public class RoomSO : ScriptableObject
                 // Exclude positions with doors from wall tile positions
                 if (!doorTileLocations.Contains(tilePos))
                 {
-                    // Check if the position is on the room's border
-                    if (x == 0 || x == roomWidth - 1 || y == 0 || y == roomHeight - 1)
+                    // Check if the position is a corner that needs a wall corner tile
+                    if (IsCornerTilePosition(x, y))
+                    {
+                        cornerWallTileLocations.Add(tilePos);
+                    }
+                    // Check if the position is on the room's border and not a corner
+                    else if (x == 0 || x == roomWidth - 1 || y == 0 || y == roomHeight - 1)
                     {
                         wallTileLocations.Add(tilePos);
                     }
@@ -128,7 +144,17 @@ public class RoomSO : ScriptableObject
     //    }
     //}
 
-    
+    private bool IsCornerTilePosition(int x, int y)
+    {
+        bool isTopEdge = y == roomHeight - 1;
+        bool isBottomEdge = y == 0;
+        bool isLeftEdge = x == 0;
+        bool isRightEdge = x == roomWidth - 1;
+
+        return (isTopEdge && (isLeftEdge || isRightEdge)) || (isBottomEdge && (isLeftEdge || isRightEdge));
+    }
+
+
     public void AddDoor(Vector2Int doorPosition, Direction direction)
     {
         doorPositions.Add(doorPosition);
