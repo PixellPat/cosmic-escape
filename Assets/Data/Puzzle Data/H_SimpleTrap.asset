@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7054f9957879034c91a35ed0f95e7e7, type: 3}
-  m_Name: H_SimplePiece
+  m_Name: H_SimpleTrap
   m_EditorClassIdentifier: 
-  pieceSprite: {fileID: -835276668, guid: 249edce45a30e3440848118f363f2d79, type: 3}
+  pieceSprite: {fileID: -98657103, guid: 249edce45a30e3440848118f363f2d79, type: 3}
   traversalTime: 2
   startRight: 0
   canFreeze: 1
   freezeCellCost: 1
-  frozenSprite: {fileID: -835276668, guid: 249edce45a30e3440848118f363f2d79, type: 3}
+  frozenSprite: {fileID: -98657103, guid: 249edce45a30e3440848118f363f2d79, type: 3}
   freezeDuration: 3
   navigateDirection: 1
   maxX: {x: -2, y: 2}
