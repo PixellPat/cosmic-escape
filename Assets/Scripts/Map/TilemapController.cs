@@ -29,6 +29,7 @@ public class TilemapController : MonoBehaviour
 
     // Door Tiles
     public TileBase eastDoorTile;
+    public TileBase westDoorTile;
     public TileBase northDoorTile;
     public TileBase southDoorTile;
 
@@ -197,8 +198,7 @@ public class TilemapController : MonoBehaviour
             case Direction.South:
                 return southDoorTile;
             case Direction.West:
-                // Use the east door tile and flip it 180 degrees for the west door
-                return FlipTile180Degrees(eastDoorTile);
+                return westDoorTile;
             default:
                 return null; // Handle default case appropriately
         }

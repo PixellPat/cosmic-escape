@@ -1133,6 +1133,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 88d067999fcaf86479abe42a515cb1ae, type: 2}
   - {fileID: 11400000, guid: 2729895306afdf146ac2fd30f20b2096, type: 2}
   eastDoorTile: {fileID: 11400000, guid: b7f13d81aaacf9843a273df1de1668a8, type: 2}
+  westDoorTile: {fileID: 11400000, guid: df802411b25ea384695c5130539c6dc5, type: 2}
   northDoorTile: {fileID: 11400000, guid: e902ab70486ac2c4c987ffc4c914b732, type: 2}
   southDoorTile: {fileID: 11400000, guid: 8be780bde7dfca743adb21f2bb539366, type: 2}
 --- !u!1 &1557856084
