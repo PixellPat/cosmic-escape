@@ -185,6 +185,8 @@ public class PuzzlePiece : MonoBehaviour
     {
         freezeCoating.SetActive(true);
         _renderer.sprite = pieceData.frozenSprite;
+        _renderer.color = new Color(56, 225, 253, 1);
+
 
         LeanTween.pause(gameObject);
 
@@ -194,6 +196,8 @@ public class PuzzlePiece : MonoBehaviour
         Timer.Register(pieceData.freezeDuration, () =>
         {
             _renderer.sprite = pieceData.pieceSprite;
+            _renderer.color = Color.white;
+
             LeanTween.resume(gameObject);
             freezeCoating.SetActive(false);
             isFrozen = false;
