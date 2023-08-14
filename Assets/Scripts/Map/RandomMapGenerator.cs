@@ -1,11 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using MyEnums;
 
 public class RandomMapGenerator : MonoBehaviour
 {
     private const int maxMainPathIterations = 100;
     private const int maxForkPathIterations = 30;
+
+    private List<Vector2Int> roomLocations;
+    private List<RoomData> roomPathData;
+    private RoomData previousRoomData;
 
     [SerializeField] private int mapWidth = 40;
     [SerializeField] private int mapHeight = 40;
@@ -16,31 +21,34 @@ public class RandomMapGenerator : MonoBehaviour
     [SerializeField] private int mainDirectionBias = 60; // Bias for the main path direction
     [SerializeField] private int forkDirectionBias = 30; // Bias for the fork path direction
 
-    [SerializeField] private List<Vector2Int> roomLocations;
-    [SerializeField] private List<RoomData> roomPathData;
-
     [SerializeField] RoomGenerator roomGenerator;
 
 
-    private enum Direction 
-    {
-        Up,
-        Right,
-        Down,
-        Left
-    }
 
     public struct RoomData
     {
         public Vector2Int Location;
-        public bool IsLastRoom;
+        public bool IsEndOfPathRoom;
+        public Vector2Int PreviousRoomLocation; // Store the previous room's location
+        public Direction PreviousRoomDirection; // Store the calculated one-door direction
 
-        public RoomData(Vector2Int location, bool isLastRoom)
+        public RoomData(Vector2Int location, Vector2Int previousRoomLocation, bool isEndOfPathRoom, Direction previousRoomDirection)
         {
             Location = location;
-            IsLastRoom = isLastRoom;
+            IsEndOfPathRoom = isEndOfPathRoom;
+            PreviousRoomLocation = previousRoomLocation;
+            PreviousRoomDirection = previousRoomDirection;
+        }
+
+        public RoomData(Vector2Int location, bool isEndOfPathRoom)
+        {
+            Location = location;
+            IsEndOfPathRoom = isEndOfPathRoom;
+            PreviousRoomLocation = new Vector2Int(0,0);
+            PreviousRoomDirection = Direction.None; // Initialize to None initially
         }
     }
+
 
     private void Start()
     {
@@ -101,16 +109,16 @@ public class RandomMapGenerator : MonoBehaviour
 
             switch (biasedDirection)
             {
-                case Direction.Up:
+                case Direction.North:
                     nextY = Mathf.Clamp(currentY + 1, 0, mapHeight - 1);
                     break;
-                case Direction.Right:
+                case Direction.East:
                     nextX = Mathf.Clamp(currentX + 1, 0, mapWidth - 1);
                     break;
-                case Direction.Down:
+                case Direction.South:
                     nextY = Mathf.Clamp(currentY - 1, 0, mapHeight - 1);
                     break;
-                case Direction.Left:
+                case Direction.West:
                     nextX = Mathf.Clamp(currentX - 1, 0, mapWidth - 1);
                     break;
             }
@@ -161,8 +169,8 @@ public class RandomMapGenerator : MonoBehaviour
 
             // Add a bias towards the randomly chosen preferred direction
             biasedDirection = Random.Range(0, 100) < mainDirectionBias ? preferredDirection : (Direction)Random.Range(0, 4);
-
         }
+
 
         // Make a copy of the last mainRoomLocation added
         RoomData lastMainPathRoomData = roomPathData.Last();
@@ -170,10 +178,44 @@ public class RandomMapGenerator : MonoBehaviour
         // Remove the last mainRoomLocation added because it has it's bool set to 'false' for being the last room in it's path
         roomPathData.RemoveAt(roomPathData.Count - 1);
 
-        // Add the location of copy above and make the bool 'true' for being the last room in the main path
-        roomPathData.Add(new RoomData(lastMainPathRoomData.Location, true));
+        // Get the previous room location and work out the location of its door that will lead back to the room wence they came from
+        Vector2Int previousRoomLocation = roomPathData.Last().Location;
+        Direction oneDoorDirection = CalculateLastRoomDoorDirection(lastMainPathRoomData.Location, previousRoomLocation);
+
+        // Add the location and previous location of copy above and make the bool 'true' for being the last room in the main path
+        roomPathData.Add(new RoomData(lastMainPathRoomData.Location, previousRoomLocation, true, oneDoorDirection));
 
         return roomPathData;
+    }
+
+
+    private Direction CalculateLastRoomDoorDirection(Vector2Int currentRoomLocation, Vector2Int previousRoomLocation)
+    {
+        // Calculate the difference between the current and previous room locations
+        Vector2Int difference = currentRoomLocation - previousRoomLocation;
+
+        // Determine the one-door direction based on the difference
+        if (difference == Vector2Int.up)
+        {
+            return Direction.South;
+        }
+        else if (difference == Vector2Int.right)
+        {
+            return Direction.West;
+        }
+        else if (difference == Vector2Int.down)
+        {
+            return Direction.North;
+        }
+        else if (difference == Vector2Int.left)
+        {
+            return Direction.East;
+        }
+        else
+        {
+            // Handle the case where the rooms are not adjacent
+            return Direction.None;
+        }
     }
 
 
@@ -211,16 +253,16 @@ public class RandomMapGenerator : MonoBehaviour
             // Select coordinates based on the biased direction
             switch (biasedDirection)
             {
-                case Direction.Up:
+                case Direction.North:
                     nextY = Mathf.Clamp(currentY + 1, 0, mapHeight - 1);
                     break;
-                case Direction.Right:
+                case Direction.East:
                     nextX = Mathf.Clamp(currentX + 1, 0, mapWidth - 1);
                     break;
-                case Direction.Down:
+                case Direction.South:
                     nextY = Mathf.Clamp(currentY - 1, 0, mapHeight - 1);
                     break;
-                case Direction.Left:
+                case Direction.West:
                     nextX = Mathf.Clamp(currentX - 1, 0, mapWidth - 1);
                     break;
             }
@@ -249,8 +291,12 @@ public class RandomMapGenerator : MonoBehaviour
         // Remove the last forkRoomLocation added because it has it's bool set to 'false' for being the last room in it's path
         roomPathData.RemoveAt(roomPathData.Count - 1);
 
-        // Add the location of copy above and make the bool 'true' for being the last room in the main path
-        roomPathData.Add(new RoomData(roomLocations.Last(), true));
+        // Get the previous room location and work out the location of its door that will lead back to the room wence they came from
+        Vector2Int previousRoomLocation = roomPathData.Last().Location;
+        Direction oneDoorDirection = CalculateLastRoomDoorDirection(lastForkPathRoomData.Location, previousRoomLocation);
+
+        // Add the location and previous location of copy above and make the bool 'true' for being the last room in the fork path
+        roomPathData.Add(new RoomData(lastForkPathRoomData.Location, previousRoomLocation, true, oneDoorDirection));
     }
 
 
@@ -268,13 +314,13 @@ public class RandomMapGenerator : MonoBehaviour
     {
         int randomValue = Random.Range(0, 2); // Generate either 0 or 1
 
-        if (mainDirection == Direction.Up || mainDirection == Direction.Down)
+        if (mainDirection == Direction.North || mainDirection == Direction.South)
         {
-            return randomValue == 0 ? Direction.Left : Direction.Right;
+            return randomValue == 0 ? Direction.West : Direction.East;
         }
         else // mainDirection is Right or Left
         {
-            return randomValue == 0 ? Direction.Up : Direction.Down;
+            return randomValue == 0 ? Direction.North : Direction.South;
         }
     }
 }

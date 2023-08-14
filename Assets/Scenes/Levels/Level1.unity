@@ -1068,9 +1068,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomPrefabs:
   - {fileID: 11400000, guid: e88d01f7e971dfc449b3ade90d113c3f, type: 2}
-  - {fileID: 11400000, guid: 6a70df4398438fa44b67c98f7dc87358, type: 2}
-  - {fileID: 11400000, guid: dd9ee11e1e7915a4a80b91f5e805bb34, type: 2}
-  - {fileID: 11400000, guid: 9cd8d6d6fa38db042a1097cfd1875944, type: 2}
   tilemapController: {fileID: 1491747556}
 --- !u!114 &1491747554
 MonoBehaviour:

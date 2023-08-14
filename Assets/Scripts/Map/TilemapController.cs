@@ -13,9 +13,6 @@ public class TilemapController : MonoBehaviour
 
     public void PlaceTiles(RoomSO room)
     {
-        ClearTilemaps();
-        //floorTilemap.SetTile(new Vector3Int(0, 0, 0), floorTile);
-
         foreach (Vector2Int tilePosition in room.floorTileLocations)
         {
             floorTilemap.SetTile(new Vector3Int(tilePosition.x, tilePosition.y, 0), floorTile);
@@ -30,12 +27,5 @@ public class TilemapController : MonoBehaviour
         {
             doorTilemap.SetTile(new Vector3Int(doorTilePos.x, doorTilePos.y, 0), doorTile);
         }
-    }
-
-    private void ClearTilemaps()
-    {
-        floorTilemap.ClearAllTiles();
-        wallTilemap.ClearAllTiles();
-        doorTilemap.ClearAllTiles();
     }
 }
