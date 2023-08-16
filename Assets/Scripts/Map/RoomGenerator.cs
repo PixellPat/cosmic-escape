@@ -7,7 +7,7 @@ using MyEnums;
 public class RoomGenerator : MonoBehaviour
 {
     private Transform roomsParent;
-    private List<RoomSO> generatedRooms = new List<RoomSO>();
+    private HashSet<RoomSO> generatedRooms = new HashSet<RoomSO>();
     
     [SerializeField] private RoomSO[] roomPrefabs;
     [SerializeField] private TilemapController tilemapController;
@@ -23,7 +23,7 @@ public class RoomGenerator : MonoBehaviour
     /// connecting them and establishing door connections between adjacent rooms.
     /// </summary>
     /// <param name="roomDataList">A list of room data containing location information.</param>
-    public void GenerateRooms(List<RandomMapGenerator.RoomData> roomDataList)
+    public void GenerateRooms(HashSet<RandomMapGenerator.RoomData> roomDataList)
     {
         // Generate room instances and establish connections between them
         GenerateAndStoreRooms(roomDataList);
@@ -47,7 +47,7 @@ public class RoomGenerator : MonoBehaviour
     /// Generates room instances based on the provided list of room data locations.
     /// </summary>
     /// <param name="roomDataList">A list of room data containing location information.</param>
-    private void GenerateAndStoreRooms(List<RandomMapGenerator.RoomData> roomDataList)
+    private void GenerateAndStoreRooms(HashSet<RandomMapGenerator.RoomData> roomDataList)
     {
         // Get the first room data to determine the starting room
          RandomMapGenerator.RoomData firstRoomData = roomDataList.First();
@@ -110,9 +110,6 @@ public class RoomGenerator : MonoBehaviour
     {
         currentRoom.AddDoor(doorPosition, direction);
 
-        //// Calculate the opposite door position in the next room
-        //Vector2Int oppositeDoorPosition = CalculateConnectedDoorPosition(doorPosition, GetOppositeDirection(direction));
-
         // Connect the next room's door
         nextRoom.AddDoor(currentRoom.gridPosition, GetOppositeDirection(direction)); // Change oppositeDoorPosition to currentRoom.Location
     }
@@ -150,34 +147,8 @@ public class RoomGenerator : MonoBehaviour
 
     private RoomSO InstantiateRoom(Vector2Int mapPosition, bool isStarting = false, bool isEndRoom = false)
     {
-        RoomSO roomInstance = ScriptableObject.CreateInstance<RoomSO>();
-
-
-        //// Access the room width and height from the RoomSO
-        //int roomWidth = roomInstance.roomWidth;
-        //int roomHeight = roomInstance.roomHeight;
-
-        //// Calculate the actual position based on room dimensions and map position
-        //Vector2Int roomPosition = new Vector2Int(
-        //    mapPosition.x * (roomWidth - 1), // Subtract 1 to account for the center pivot
-        //    mapPosition.y * (roomHeight - 1)); // Subtract 1 to account for the center pivot
-            
+        RoomSO roomInstance = ScriptableObject.CreateInstance<RoomSO>();            
         roomInstance.Initialize(mapPosition, isStarting, isEndRoom);
-
-        //GameObject roomCenterObject = new GameObject("Room");
-        //roomCenterObject.transform.position = position;
-        //roomCenterObject.transform.SetParent(roomsParent);
-
-        //roomInstance.roomCenter = roomCenterObject.transform;
-
-        //// Use ChooseRandomRoomPrefab() to get a random room prefab
-        //RoomSO randomRoomPrefab = ChooseRandomRoomPrefab();
-        //if (randomRoomPrefab != null)
-        //{
-        //    // Instantiate the randomly chosen room prefab and assign it to the roomPrefab property
-        //    GameObject roomPrefabInstance = Instantiate(randomRoomPrefab.roomPrefab, roomCenterObject.transform);
-        //    roomInstance.roomPrefab = roomPrefabInstance;
-        //}
 
         return roomInstance;
     }
@@ -256,12 +227,12 @@ public class RoomGenerator : MonoBehaviour
 
     public RoomSO GetStartingRoom()
     {
-        return generatedRooms.Count > 0 ? generatedRooms[0] : null;
+        return generatedRooms.Count > 0 ? generatedRooms.FirstOrDefault() : null;
     }
 
     public RoomSO GetRoomByIndex(int index)
     {
-        return index >= 0 && index < generatedRooms.Count ? generatedRooms[index] : null;
+        return index >= 0 && index < generatedRooms.Count ? generatedRooms.ElementAt(index) : null;
     }
 
     public void SetCurrentRoom(int index)

@@ -9,3 +9,4 @@ namespace MyEnums
         None
     }
 }
+

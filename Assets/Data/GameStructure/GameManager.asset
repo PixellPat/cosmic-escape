@@ -16,11 +16,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 456011254a6eec240a849e6cfeaa8da7, type: 2}
   menus:
   - {fileID: 11400000, guid: 14f5d5521e074cb45b59d19429a655c7, type: 2}
-  CurrentLevelIndex: 0
+  CurrentLevelIndex: 1
   OnUnloadPauseScene: {fileID: 11400000, guid: d88088fbf2adc3f4981508011891d1de, type: 2}
-  mapWidth: 40
-  mapHeight: 40
-  numRooms: 30
-  roomGenerator: {fileID: 11400000, guid: f28cc6b6dd7e36d4ebce2f94f32adbda, type: 2}
-  roomCentersParent: {fileID: 0}
-  randomMapGenerator: {fileID: 4927919661567796954, guid: 170e5bb5783e4914aac6fbb9c4b861f9, type: 3}

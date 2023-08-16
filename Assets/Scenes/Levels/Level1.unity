@@ -1083,9 +1083,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapWidth: 40
   mapHeight: 40
-  numRooms: 30
-  startX: 20
-  startY: 20
   mainDirectionBias: 60
   forkDirectionBias: 30
   roomGenerator: {fileID: 1491747553}
