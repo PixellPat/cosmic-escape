@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneName: Level1
   shortDescription: Level 1 of the game.
-  musicClip: {fileID: 0}
+  musicClip: {fileID: 8300000, guid: ee0f63fc7702d8346a5f47fa71b536bc, type: 3}
   musicVolume: 0.3
   levelSpecific: 0

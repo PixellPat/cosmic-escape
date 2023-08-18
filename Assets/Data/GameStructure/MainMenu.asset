@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneName: MainMenu
   shortDescription: First Menu to show when game starts.
-  musicClip: {fileID: 0}
-  musicVolume: 0.3
+  musicClip: {fileID: 8300000, guid: 209f2ce21cb0e35468ff3c480fd0ff0a, type: 3}
+  musicVolume: 0.29
   type: 0
