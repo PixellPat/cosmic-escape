@@ -23,7 +23,7 @@ public class RoomGenerator : MonoBehaviour
     /// connecting them and establishing door connections between adjacent rooms.
     /// </summary>
     /// <param name="roomDataList">A list of room data containing location information.</param>
-    public void GenerateRooms(HashSet<RandomMapGenerator.RoomData> roomDataList)
+    public void GenerateRooms(List<RandomMapGenerator.RoomData> roomDataList)
     {
         // Generate room instances and establish connections between them
         GenerateAndStoreRooms(roomDataList);
@@ -47,7 +47,7 @@ public class RoomGenerator : MonoBehaviour
     /// Generates room instances based on the provided list of room data locations.
     /// </summary>
     /// <param name="roomDataList">A list of room data containing location information.</param>
-    private void GenerateAndStoreRooms(HashSet<RandomMapGenerator.RoomData> roomDataList)
+    private void GenerateAndStoreRooms(List<RandomMapGenerator.RoomData> roomDataList)
     {
         // Get the first room data to determine the starting room
          RandomMapGenerator.RoomData firstRoomData = roomDataList.First();

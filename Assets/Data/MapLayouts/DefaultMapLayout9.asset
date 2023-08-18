@@ -1,0 +1,211 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8798d0b15938bdd4a8faa4851ca0cd8e, type: 3}
+  m_Name: DefaultMapLayout9
+  m_EditorClassIdentifier: 
+  roomPathData:
+  - Location: {x: 20, y: 20}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 21, y: 20}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 22, y: 20}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 22, y: 19}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 21, y: 19}
+    IsEndOfPathRoom: 1
+    PreviousRoomLocation: {x: 22, y: 19}
+    PreviousRoomDirection: 1
+  - Location: {x: 23, y: 20}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 23, y: 21}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 24, y: 21}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 24, y: 22}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 25, y: 22}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 26, y: 22}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 26, y: 21}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 25, y: 21}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 25, y: 20}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 25, y: 19}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 24, y: 19}
+    IsEndOfPathRoom: 1
+    PreviousRoomLocation: {x: 25, y: 19}
+    PreviousRoomDirection: 1
+  - Location: {x: 27, y: 22}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 28, y: 22}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 29, y: 22}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 29, y: 23}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 28, y: 23}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 28, y: 24}
+    IsEndOfPathRoom: 1
+    PreviousRoomLocation: {x: 28, y: 23}
+    PreviousRoomDirection: 2
+  - Location: {x: 30, y: 22}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 31, y: 22}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 32, y: 22}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 32, y: 23}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 31, y: 23}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 31, y: 24}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 31, y: 25}
+    IsEndOfPathRoom: 1
+    PreviousRoomLocation: {x: 31, y: 24}
+    PreviousRoomDirection: 2
+  - Location: {x: 33, y: 22}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 34, y: 22}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 34, y: 23}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 33, y: 23}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 33, y: 24}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 34, y: 24}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 34, y: 25}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 35, y: 25}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 35, y: 24}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 36, y: 24}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 37, y: 24}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 37, y: 23}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 38, y: 23}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 38, y: 22}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 38, y: 21}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 38, y: 20}
+    IsEndOfPathRoom: 1
+    PreviousRoomLocation: {x: 38, y: 21}
+    PreviousRoomDirection: 0
+  - Location: {x: 38, y: 24}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 39, y: 24}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 39, y: 25}
+    IsEndOfPathRoom: 0
+    PreviousRoomLocation: {x: 0, y: 0}
+    PreviousRoomDirection: 4
+  - Location: {x: 38, y: 25}
+    IsEndOfPathRoom: 1
+    PreviousRoomLocation: {x: 39, y: 25}
+    PreviousRoomDirection: 1

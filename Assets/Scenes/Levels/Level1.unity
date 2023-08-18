@@ -1086,6 +1086,17 @@ MonoBehaviour:
   mainDirectionBias: 60
   forkDirectionBias: 30
   roomGenerator: {fileID: 1491747553}
+  failSafeMaps:
+  - {fileID: 11400000, guid: 73a3278d84bb23d44a865f16bee14043, type: 2}
+  - {fileID: 11400000, guid: 1bb057a11ae61c94a9ec4bd6597eff13, type: 2}
+  - {fileID: 11400000, guid: 874bbe7e2c95fcd44869140bdc90a4fd, type: 2}
+  - {fileID: 11400000, guid: 859ad6e65b148b54c9cc281cbeb48691, type: 2}
+  - {fileID: 11400000, guid: bcfefdb3e4859e24580921c1bb990bb9, type: 2}
+  - {fileID: 11400000, guid: 5986ff79ce681a44c87139f10f0b02a9, type: 2}
+  - {fileID: 11400000, guid: d263b392ec7ee244aa3ba5033296c068, type: 2}
+  - {fileID: 11400000, guid: ea9dcb7ae49830741a2f5426a27e2e22, type: 2}
+  - {fileID: 11400000, guid: d53f6cae2c810244988cffa896b7c745, type: 2}
+  - {fileID: 11400000, guid: 5871e64b79d7a0b4a86a824917dff6a1, type: 2}
 --- !u!4 &1491747555
 Transform:
   m_ObjectHideFlags: 0
