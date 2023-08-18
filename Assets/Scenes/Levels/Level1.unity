@@ -1081,6 +1081,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f741392c5a92f44cb832919c0bceec1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentSeed: 0
   mapWidth: 40
   mapHeight: 40
   mainDirectionBias: 60

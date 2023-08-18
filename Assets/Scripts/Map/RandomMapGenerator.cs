@@ -13,12 +13,16 @@ public class RandomMapGenerator : MonoBehaviour
     private int straightPathRooms = 3;
     private int straightCountX = 0;
     private int straightCountY = 0;
+    private int minStraightPath = 3;
+    private int maxStraightPath = 5;
 
     private List<Vector2Int> roomLocations;
     private List<RoomData> roomPathData;
     private Vector2Int startLocation;
     private DefaultMapLayoutSO selectedFailsafe;
 
+    //[SerializeField] private int seed;
+    [SerializeField] private int currentSeed;
     [SerializeField] private int mapWidth = 40;
     [SerializeField] private int mapHeight = 40;
     [SerializeField] private int mainDirectionBias = 60;
@@ -26,18 +30,19 @@ public class RandomMapGenerator : MonoBehaviour
     [SerializeField] private RoomGenerator roomGenerator;
     [SerializeField] private List<DefaultMapLayoutSO> failSafeMaps;
 
-
-    private void Start()
+    private void Awake()
     {
-        Initialize();
-        List<RoomData> roomData = GenerateMap();
-        roomGenerator.GenerateRooms(roomData);
-    }
+        currentSeed = (int)System.DateTime.Now.Ticks;
+        Random.InitState(currentSeed);
 
-    private void Initialize()
-    {
         selectedFailsafe = GetRandomFailsafeMap();
         startLocation = new Vector2Int(mapWidth / 2, mapHeight / 2);
+    }
+
+    private void Start()
+    {   
+        List<RoomData> roomData = GenerateMap();
+        roomGenerator.GenerateRooms(roomData);
     }
 
     [System.Serializable]
@@ -96,15 +101,19 @@ public class RandomMapGenerator : MonoBehaviour
 
                 ProcessPathDirection(currentLocation, nextLocation);
 
-                // If it's going in a straight line for at least 3 steps, create a fork
+                // If the path is going in a straight line for certain length, create a fork
                 if (straightCountX >= straightPathRooms || straightCountY >= straightPathRooms)
                 {
                     bool isForkGenSuccessful = CreateFork(currentLocation, preferredDirection);
                     if (!isForkGenSuccessful)
+                    {
                         return selectedFailsafe.roomPathData;
+                    }
 
                     straightCountX = 0;
                     straightCountY = 0;
+
+                    straightPathRooms = Random.Range(minStraightPath, maxStraightPath);
                 }
 
                 currentLocation = nextLocation;
@@ -139,6 +148,8 @@ public class RandomMapGenerator : MonoBehaviour
 
                                 straightCountX = 0;
                                 straightCountY = 0;
+
+                                straightPathRooms = Random.Range(minStraightPath, maxStraightPath);
                             }
 
                             currentLocation = nextLocation;
@@ -408,8 +419,3 @@ public class RandomMapGenerator : MonoBehaviour
         }
     }
 }
-
-
-
-//// Use this Class when you need to populate DefaultMapLayoutSO for the failSafeMaps list.
-//defaultMapAssetCreator.CreateDefaultMapLayout(roomPathData);
