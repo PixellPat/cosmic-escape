@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 
@@ -114,6 +115,64 @@ public class DAM : MonoBehaviour
         sfxAudioSource.volume = volume;
     }
 
+    public void FadeInMusic(System.Enum trackType, float duration)
+    {
+        AudioClip clip = null;
+
+        if (trackType is MenuMusic)
+        {
+            clip = audioClipsSO.GetMusicClip((MenuMusic)trackType);
+        }
+        else if (trackType is GameMusic)
+        {
+            clip = audioClipsSO.GetMusicClip((GameMusic)trackType);
+        }
+        else if (trackType is AmbienceMusic)
+        {
+            clip = audioClipsSO.GetMusicClip((AmbienceMusic)trackType);
+        }
+
+        if (clip != null)
+        {
+            StartCoroutine(FadeInProcess(musicAudioSource, clip, duration));
+        }
+    }
+
+    public void FadeOutMusic(float duration)
+    {
+        StartCoroutine(FadeOutProcess(musicAudioSource, duration));
+    }
+
+    private IEnumerator FadeInProcess(AudioSource audioSource, AudioClip newClip, float duration)
+    {
+        if (newClip)
+        {
+            audioSource.clip = newClip;
+            audioSource.Play();
+        }
+
+        audioSource.volume = 0;
+        float targetVolume = 1.0f;
+        while (audioSource.volume < targetVolume)
+        {
+            audioSource.volume += targetVolume * Time.deltaTime / duration;
+            yield return null;
+        }
+    }
+
+    private IEnumerator FadeOutProcess(AudioSource audioSource, float duration)
+    {
+        float startVolume = audioSource.volume;
+
+        while (audioSource.volume > 0)
+        {
+            audioSource.volume -= startVolume * Time.deltaTime / duration;
+            yield return null;
+        }
+
+        audioSource.Stop();
+        audioSource.volume = startVolume;
+    }
 
 
     #region ENUMS
