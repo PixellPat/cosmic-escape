@@ -15,6 +15,6 @@ MonoBehaviour:
   levels:
   - {fileID: 11400000, guid: 456011254a6eec240a849e6cfeaa8da7, type: 2}
   menus:
-  - {fileID: 11400000, guid: 14f5d5521e074cb45b59d19429a655c7, type: 2}
+  - {fileID: 11400000, guid: d470808ed3a8f154898ede215c17f5ad, type: 2}
   CurrentLevelIndex: 0
   OnUnloadPauseScene: {fileID: 11400000, guid: d88088fbf2adc3f4981508011891d1de, type: 2}
