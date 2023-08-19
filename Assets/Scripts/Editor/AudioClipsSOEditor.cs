@@ -35,10 +35,13 @@ public class AudioClipsSOEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        GUIStyle centeredLabelStyle = new GUIStyle(EditorStyles.label);
+        centeredLabelStyle.alignment = TextAnchor.MiddleCenter;
+
         serializedObject.Update();
 
         // Music Tracks
-        EditorGUILayout.LabelField("Music Tracks", EditorStyles.whiteLargeLabel);
+        EditorGUILayout.LabelField("Music Tracks", centeredLabelStyle);
 
         ShowCategory(ref showMenuMusicTracks, menuMusicTracksProperty, typeof(DAM.MenuMusic), "Menu Music");
         ShowCategory(ref showGameMusicTracks, gameMusicTracksProperty, typeof(DAM.GameMusic), "Game Music");
@@ -48,7 +51,7 @@ public class AudioClipsSOEditor : Editor
         EditorGUILayout.Space();
 
         // SFX Tracks
-        EditorGUILayout.LabelField("SFX Tracks", EditorStyles.whiteLargeLabel);
+        EditorGUILayout.LabelField("SFX Tracks", centeredLabelStyle);
 
         ShowCategory(ref showUISFXTracks, uiSFXTracksProperty, typeof(DAM.UISFX), "UI SFX");
         ShowCategory(ref showPlayerSFXTracks, playerSFXTracksProperty, typeof(DAM.PlayerSFX), "Player SFX");
