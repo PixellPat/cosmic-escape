@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -141,6 +142,30 @@ public class DAM : MonoBehaviour
     public void FadeOutMusic(float duration)
     {
         StartCoroutine(FadeOutProcess(musicAudioSource, duration));
+    }
+
+    public void TransitionTracks(Enum fromTrack, Enum toTrack, float duration)
+    {
+        StartCoroutine(FadeOutProcess(musicAudioSource, duration, () =>
+        {
+            FadeInMusic(toTrack, duration);
+        }));
+    }
+
+    private IEnumerator FadeOutProcess(AudioSource audioSource, float duration, Action onFinished = null)
+    {
+        float startVolume = audioSource.volume;
+
+        while (audioSource.volume > 0)
+        {
+            audioSource.volume -= startVolume * Time.deltaTime / duration;
+            yield return null;
+        }
+
+        audioSource.Stop();
+        audioSource.volume = startVolume; // Reset volume to original after stopping
+
+        onFinished?.Invoke();
     }
 
     private IEnumerator FadeInProcess(AudioSource audioSource, AudioClip newClip, float duration)

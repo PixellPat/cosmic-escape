@@ -13,7 +13,8 @@ public class MainMenu : MonoBehaviour
         playButton.onClick.AddListener(OnPlayButtonClick);
         quitButton.onClick.AddListener(OnQuitButtonClick);
 
-        DAM.Instance.FadeInMusic(DAM.MenuMusic.MainTrack2, 5.0f);
+        DAM.Instance.FadeInMusic(DAM.GameMusic.Level1Track1, 2.0f);
+
     }
 
 
@@ -21,6 +22,9 @@ public class MainMenu : MonoBehaviour
     {
         // Play the click sound
         DAM.Instance.PlaySFX(DAM.UISFX.ButtonClick);
+
+        DAM.Instance.TransitionTracks(DAM.GameMusic.Level1Track1, DAM.GameMusic.Level1Track1, 5.0f);
+
     }
 
     private void OnQuitButtonClick()
@@ -35,6 +39,6 @@ public class MainMenu : MonoBehaviour
         playButton.onClick.RemoveListener(OnPlayButtonClick);
         quitButton.onClick.RemoveListener(OnQuitButtonClick);
 
-        DAM.Instance.FadeOutMusic(2.0f);
+        //DAM.Instance.FadeOutMusic(2.0f);
     }
 }
