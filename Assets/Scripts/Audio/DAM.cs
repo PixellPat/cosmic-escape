@@ -116,6 +116,16 @@ public class DAM : MonoBehaviour
         sfxAudioSource.volume = volume;
     }
 
+    public float GetMusicVolume()
+    {
+        return musicAudioSource.volume;
+    }
+
+    public float GetSFXVolume()
+    {
+        return sfxAudioSource.volume;
+    }
+
     public void FadeInMusic(System.Enum trackType, float duration)
     {
         AudioClip clip = null;
